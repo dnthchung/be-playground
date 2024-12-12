@@ -1,3 +1,4 @@
+//path :backend/src/common/utils/jwt.ts
 import jwt, { SignOptions, VerifyOptions } from "jsonwebtoken";
 import { SessionDocument } from "../../database/models/session.model";
 import { UserDocument } from "../../database/models/user.model";
@@ -30,10 +31,7 @@ export const refreshTokenSignOptions: SignOptsAndSecret = {
   secret: config.JWT.REFRESH_SECRET,
 };
 
-export const signJwtToken = (
-  payload: AccessTPayload | RefreshTPayload,
-  options?: SignOptsAndSecret
-) => {
+export const signJwtToken = (payload: AccessTPayload | RefreshTPayload, options?: SignOptsAndSecret) => {
   const { secret, ...opts } = options || accessTokenSignOptions;
   return jwt.sign(payload, secret, {
     ...defaults,
@@ -41,10 +39,7 @@ export const signJwtToken = (
   });
 };
 
-export const verifyJwtToken = <TPayload extends object = AccessTPayload>(
-  token: string,
-  options?: VerifyOptions & { secret: string }
-) => {
+export const verifyJwtToken = <TPayload extends object = AccessTPayload>(token: string, options?: VerifyOptions & { secret: string }) => {
   try {
     const { secret = config.JWT.SECRET, ...opts } = options || {};
     const payload = jwt.verify(token, secret, {

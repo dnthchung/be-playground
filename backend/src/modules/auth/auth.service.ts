@@ -1,3 +1,4 @@
+//path : backend/src/modules/auth/auth.module.ts
 // import jwt from "jsonwebtoken";
 // import { ErrorCode } from "../../common/enums/error-code.enum";
 // import { VerificationEnum } from "../../common/enums/verification-code.enum";
@@ -278,6 +279,8 @@
 //     return await SessionModel.findByIdAndDelete(sessionId);
 //   }
 // }
+
+//path : backend/src/modules/auth/auth.module.ts
 
 import jwt from "jsonwebtoken";
 import { ErrorCode } from "../../common/enums/error-code.enum";

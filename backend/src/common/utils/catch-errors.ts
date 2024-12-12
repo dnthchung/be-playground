@@ -1,14 +1,11 @@
+//path : backend/src/common/utils/catch-errors.ts
 import { HTTP_STATUS, HTTP_STATUSCode } from "../../config/http.config";
 import { ErrorCode } from "../enums/error-code.enum";
 import { AppError } from "./AppError";
 
 export class NotFoundException extends AppError {
   constructor(message = "Resource not found", errorCode?: ErrorCode) {
-    super(
-      message,
-      HTTP_STATUS.NOT_FOUND,
-      errorCode || ErrorCode.RESOURCE_NOT_FOUND
-    );
+    super(message, HTTP_STATUS.NOT_FOUND, errorCode || ErrorCode.RESOURCE_NOT_FOUND);
   }
 }
 
@@ -20,30 +17,18 @@ export class BadRequestException extends AppError {
 
 export class UnauthorizedException extends AppError {
   constructor(message = "Unauthorized Access", errorCode?: ErrorCode) {
-    super(
-      message,
-      HTTP_STATUS.UNAUTHORIZED,
-      errorCode || ErrorCode.ACCESS_UNAUTHORIZED
-    );
+    super(message, HTTP_STATUS.UNAUTHORIZED, errorCode || ErrorCode.ACCESS_UNAUTHORIZED);
   }
 }
 
 export class InternalServerException extends AppError {
   constructor(message = "Internal Server Error", errorCode?: ErrorCode) {
-    super(
-      message,
-      HTTP_STATUS.INTERNAL_SERVER_ERROR,
-      errorCode || ErrorCode.INTERNAL_SERVER_ERROR
-    );
+    super(message, HTTP_STATUS.INTERNAL_SERVER_ERROR, errorCode || ErrorCode.INTERNAL_SERVER_ERROR);
   }
 }
 
 export class HttpException extends AppError {
-  constructor(
-    message = "Http Exception Error",
-    statusCode: HTTP_STATUSCode,
-    errorCode?: ErrorCode
-  ) {
+  constructor(message = "Http Exception Error", statusCode: HTTP_STATUSCode, errorCode?: ErrorCode) {
     super(message, statusCode, errorCode);
   }
 }

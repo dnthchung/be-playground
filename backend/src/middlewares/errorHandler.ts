@@ -1,11 +1,9 @@
+//path : backend/src/middlewares/errorHandler.ts
 import { z } from "zod";
 import { ErrorRequestHandler, Response } from "express";
 import { HTTP_STATUS } from "../config/http.config";
 import { AppError } from "../common/utils/AppError";
-import {
-  clearAuthenticationCookies,
-  REFRESH_PATH,
-} from "../common/utils/cookie";
+import { clearAuthenticationCookies, REFRESH_PATH } from "../common/utils/cookie";
 
 const formatZodError = (res: Response, error: z.ZodError) => {
   const errors = error?.issues?.map((err) => ({
@@ -18,16 +16,17 @@ const formatZodError = (res: Response, error: z.ZodError) => {
   });
 };
 
-export const errorHandler: ErrorRequestHandler = (
-  error,
-  req,
-  res,
-  next
-): any => {
+export const errorHandler: ErrorRequestHandler = (error, req, res, next): any => {
   console.error(`Error occured on PATH: ${req.path}`, error);
 
   if (req.path === REFRESH_PATH) {
-    clearAuthenticationCookies(res);
+    // console.log("Clearing authentication cookies");
+
+    // clearAuthenticationCookies(res);
+
+    return res.status(HTTP_STATUS.UNAUTHORIZED).json({
+      message: "Unauthorized Access, something went wrong with the refresh token",
+    });
   }
 
   if (error instanceof SyntaxError) {

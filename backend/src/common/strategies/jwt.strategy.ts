@@ -1,8 +1,5 @@
-import {
-  ExtractJwt,
-  Strategy as JwtStrategy,
-  StrategyOptionsWithRequest,
-} from "passport-jwt";
+//path: backend/src/common/strategies/jwt.strategy.ts
+import { ExtractJwt, Strategy as JwtStrategy, StrategyOptionsWithRequest } from "passport-jwt";
 import { UnauthorizedException } from "../utils/catch-errors";
 import { ErrorCode } from "../enums/error-code.enum";
 import { config } from "../../config/app.config";
@@ -19,10 +16,7 @@ const options: StrategyOptionsWithRequest = {
     (req) => {
       const accessToken = req.cookies.accessToken;
       if (!accessToken) {
-        throw new UnauthorizedException(
-          "Unauthorized access token",
-          ErrorCode.AUTH_TOKEN_NOT_FOUND
-        );
+        throw new UnauthorizedException("Unauthorized access token", ErrorCode.AUTH_TOKEN_NOT_FOUND);
       }
       return accessToken;
     },
@@ -46,7 +40,7 @@ export const setupJwtStrategy = (passport: PassportStatic) => {
       } catch (error) {
         return done(error, false);
       }
-    })
+    }),
   );
 };
 

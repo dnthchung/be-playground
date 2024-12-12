@@ -1,3 +1,4 @@
+//path : backend/src/modules/auth/auth.controller.ts
 import { Request, Response } from "express";
 import { asyncHandler } from "../../middlewares/asyncHandler";
 import { AuthService } from "./auth.service";

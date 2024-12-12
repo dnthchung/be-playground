@@ -1,3 +1,4 @@
+//path: backend/src/index.ts
 import "dotenv/config";
 
 // Core modules
