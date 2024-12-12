@@ -27,8 +27,8 @@ const sessionSchema = new Schema<SessionDocument>({
   expiredAt: {
     type: Date,
     required: true,
-    // default: thirtyDaysFromNow,
-    default: config.SESSION_EXPIRES_IN ? new Date(Date.now() + parseInt(config.SESSION_EXPIRES_IN)) : thirtyDaysFromNow(),
+    default: thirtyDaysFromNow,
+    // default: config.SESSION_EXPIRES_IN ? new Date(Date.now() + parseInt(config.SESSION_EXPIRES_IN)) : thirtyDaysFromNow(),
   },
 });
 
