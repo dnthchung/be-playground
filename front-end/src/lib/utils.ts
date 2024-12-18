@@ -162,7 +162,7 @@ export const formatDateTimeToTimeString = (date: string | Date) => {
   return format(date instanceof Date ? date : new Date(date), "HH:mm:ss");
 };
 
-export const generateSocketInstace = (accessToken: string) => {
+export const generateSocketInstance = (accessToken: string) => {
   return io(envConfig.NEXT_PUBLIC_API_ENDPOINT, {
     auth: {
       Authorization: `Bearer ${accessToken}`,

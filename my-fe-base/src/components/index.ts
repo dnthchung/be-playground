@@ -21,6 +21,7 @@ export * from "./shadcn/textarea";
 export * from "./shadcn/progress";
 export * from "./shadcn/avatar";
 export * from "./shadcn/card";
+export * from "./shadcn/toast";
 
 // ============================== Thay vì ==============================
 // import { Button } from "@/components/shadcn/ui/button";
