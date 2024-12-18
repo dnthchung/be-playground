@@ -1,16 +1,19 @@
-'use server'
+"use server";
 
-import { cookies } from 'next/headers'
-import { Locale, defaultLocale } from '@/config'
+import { cookies } from "next/headers";
+import { Locale, defaultLocale } from "@/config";
 
-// In this example the locale is read from a cookie. You could alternatively
-// also read it from a database, backend service, or any other source.
-const COOKIE_NAME = 'NEXT_LOCALE'
+// Tên cookie lưu trữ ngôn ngữ người dùng
+const COOKIE_NAME = "NEXT_LOCALE";
 
+// ===================== Locale Management =====================
+
+// Lấy ngôn ngữ người dùng từ cookie, mặc định là ngôn ngữ hệ thống
 export async function getUserLocale() {
-  return cookies().get(COOKIE_NAME)?.value || defaultLocale
+  return cookies().get(COOKIE_NAME)?.value || defaultLocale;
 }
 
+// Cập nhật ngôn ngữ người dùng trong cookie
 export async function setUserLocale(locale: Locale) {
-  cookies().set(COOKIE_NAME, locale)
+  cookies().set(COOKIE_NAME, locale);
 }
