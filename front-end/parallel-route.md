@@ -41,6 +41,6 @@ Bây giờ mình sẽ làm một số bài test:
 
 2. Khi bạn từ trang chủ **click** vào `/setting` thì slot `modal` 2 sẽ được active, cùng với đó là slot `children` ẩn được active.
 
-Nhưng bạn F5 page `/setting` thì bạn sẽ bị 404. Vì lúc này slot `chidren` không active nữa, Next.js sẽ tìm đến `default.tsx` của slot children nhưng chúng ta chưa tạo thì sẽ bị 404.
+Nhưng bạn F5 page `/setting` thì bạn sẽ bị 404. Vì lúc này slot `children` không active nữa, Next.js sẽ tìm đến `default.tsx` của slot children nhưng chúng ta chưa tạo thì sẽ bị 404.
 
 > Bạn chỉ cần quan tâm slot ẩn `children` khi bạn đang ở url `/setting` thôi, còn lại url khác thì không cần quan tâm.

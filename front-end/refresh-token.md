@@ -9,7 +9,7 @@ Các API yêu cầu Authentication có thể được gọi ở 2 nơi
 
 Các trường hợp hết hạn access token
 
-- Đang dùng thì hết hạn: Chúng ta sẽ không để trường hợp này xảy ra, bằng cách có 1 setinterval check token liên tục để refresh token trước khi nó hết hạn
+- Đang dùng thì hết hạn: Chúng ta sẽ không để trường hợp này xảy ra, bằng cách có 1 setInterval check token liên tục để refresh token trước khi nó hết hạn
 
 - Lâu ngày không vào web, vào lại thì hết hạn:
 
@@ -19,6 +19,6 @@ Lưu ý để tránh bị bug khi thực hiện Đang dùng thì hết hạn
 
 - Không để refresh token bị gọi duplicate
 - Khi refresh token bị lỗi ở route handler => trả về 401 bất kể lỗi gì
-- Khi refrest token bị lỗi ở useEffect client => ngừng interval ngay
+- Khi refresh token bị lỗi ở useEffect client => ngừng interval ngay
 - Đưa logic check vào layout ở trang authenticated: Không cho chạy refresh token ở những trang mà unauthenticated như: login, logout
 - Kiểm tra logic flow trong middleware
