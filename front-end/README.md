@@ -1,36 +1,34 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+Trong Next.js, **Intercepting Routes** và **Parallel Routes** là các khái niệm liên quan đến cách bạn có thể tổ chức và hiển thị các thành phần trong ứng dụng của mình. Dưới đây là một số giải thích chi tiết hơn về các khái niệm này:
 
-## Getting Started
+### 1. **Parallel Routes (Route song song)**
 
-First, run the development server:
+- **Parallel Routes** cho phép bạn hiển thị nhiều thành phần (component) cùng một lúc trên cùng một trang. Điều này có thể hữu ích khi bạn muốn hiển thị nội dung từ nhiều route khác nhau trên cùng một trang mà không cần phải chuyển hướng (navigate).
+- Ví dụ: Bạn có thể hiển thị một sidebar (`@sidebar`) và một main content (`@main`) cùng một lúc trên cùng một trang.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### 2. **Intercepting Routes (Route chặn)**
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Intercepting Routes** cho phép bạn "chặn" một route và hiển thị một thành phần khác thay vì route đích đến. Điều này thường được sử dụng để hiển thị các modal hoặc các thành phần tương tác mà không cần phải tải lại toàn bộ trang.
+- Ví dụ: Khi bạn navigate đến một route như `/dishes/[slug]`, thay vì hiển thị trang `page.tsx` của `/dishes/[slug]`, bạn có thể hiển thị một modal hoặc một thành phần khác từ một route khác.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. **Cách hoạt động**
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- **Khai báo tên folder**: Bạn có thể khai báo các folder với các ký hiệu như `(.), (..), (...)` để xác định cách các route được tổ chức và hiển thị. Các ký hiệu này giúp bạn quản lý các route segment một cách linh hoạt.
+- **Route Segment**: Một route segment là một phần của URL được phân tách bởi dấu gạch chéo (`/`). Ví dụ, trong URL `/dishes/pizza`, các segment là `dishes` và `pizza`.
 
-## Learn More
+### 4. **Khai báo Intercepting Route**
 
-To learn more about Next.js, take a look at the following resources:
+- Khi bạn khai báo một intercepting route, nó sẽ ảnh hưởng đến tất cả các page ở cùng level và các page con của nó. Điều này có thể là mục đích hoặc có thể là một bug, tùy thuộc vào cách bạn muốn tổ chức ứng dụng của mình.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 5. **Route Segment là gì?**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- **Route Segment** là một phần của URL được phân tách bởi dấu gạch chéo (`/`). Mỗi segment có thể đại diện cho một thành phần hoặc một trang trong ứng dụng của bạn. Ví dụ:
+  - URL: `/dishes/pizza`
+    - Segment 1: `dishes`
+    - Segment 2: `pizza`
 
-## Deploy on Vercel
+### Tổng kết
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Parallel Routes** và **Intercepting Routes** là các công cụ mạnh mẽ trong Next.js giúp bạn tổ chức và hiển thị nội dung một cách linh hoạt.
+- **Route Segment** là các phần của URL được sử dụng để xác định cấu trúc và đường dẫn trong ứng dụng của bạn.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Hy vọng những giải thích trên sẽ giúp bạn hiểu rõ hơn về các khái niệm này trong Next.js.
