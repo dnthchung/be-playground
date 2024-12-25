@@ -42,21 +42,17 @@ const isStatusError = (error: any): error is StatusError => {
 }
 
 export const errorHandlerPlugin = fastifyPlugin(async (fastify) => {
-  fastify.setErrorHandler(function (
-    error: EntityError | AuthError | ForbiddenError | FastifyError | ZodFastifyError | PrismaClientKnownRequestError,
-    request,
-    reply
-  ) {
+  fastify.setErrorHandler(function (error: EntityError | AuthError | ForbiddenError | FastifyError | ZodFastifyError | PrismaClientKnownRequestError, request, reply) {
     if (isEntityError(error)) {
       return reply.status(error.status).send({
         message: 'Lỗi xảy ra khi xác thực dữ liệu...',
         errors: error.fields,
-        statusCode: error.status
+        statusCode: error.status,
       })
     } else if (isForbiddenError(error)) {
       return reply.status(error.status).send({
         message: error.message,
-        statusCode: error.status
+        statusCode: error.status,
       })
     } else if (isAuthError(error)) {
       return reply
@@ -64,24 +60,24 @@ export const errorHandlerPlugin = fastifyPlugin(async (fastify) => {
           path: '/',
           httpOnly: true,
           sameSite: 'none',
-          secure: true
+          secure: true,
         })
         .status(error.status)
         .send({
           message: error.message,
-          statusCode: error.status
+          statusCode: error.status,
         })
     } else if (isStatusError(error)) {
       return reply.status(error.status).send({
         message: error.message,
-        statusCode: error.status
+        statusCode: error.status,
       })
     } else if (isZodFastifyError(error)) {
       const { issues, validationContext } = error
       const errors = issues.map((issue) => {
         return {
           ...issue,
-          field: issue.path.join('.')
+          field: issue.path.join('.'),
         }
       })
       const statusCode = 422
@@ -90,20 +86,20 @@ export const errorHandlerPlugin = fastifyPlugin(async (fastify) => {
         message: `A validation error occurred when validating the ${validationContext}...`,
         errors,
         code: error.code,
-        statusCode
+        statusCode,
       })
     } else if (isPrismaClientKnownRequestError(error) && error.code === 'P2025') {
       const statusCode = 404
       return reply.status(statusCode).send({
         message: error.message ?? 'Không tìm thấy dữ liệu',
-        statusCode: statusCode
+        statusCode: statusCode,
       })
     } else {
       const statusCode = (error as any).statusCode || 400
       return reply.status(statusCode).send({
         message: error.message,
         error,
-        statusCode
+        statusCode,
       })
     }
   })
