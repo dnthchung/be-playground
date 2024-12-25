@@ -9,9 +9,9 @@ const autoRemoveRefreshTokenJob = () => {
       await prisma.refreshToken.deleteMany({
         where: {
           expiresAt: {
-            lt: new Date()
-          }
-        }
+            lt: new Date(),
+          },
+        },
       })
     } catch (error) {
       console.error(error)
