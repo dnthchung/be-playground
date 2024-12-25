@@ -32,15 +32,17 @@ const getOauthGoogleUrl = () => {
   const qs = new URLSearchParams(options);
   return `${rootUrl}?${qs.toString()}`;
 };
+
 const googleOauthUrl = getOauthGoogleUrl();
+
 export default function LoginForm() {
-  const t = useTranslations("Login");
-  const errorMessageT = useTranslations("ErrorMessage");
   const { searchParams, setSearchParams } = useSearchParamsLoader();
+  const errorMessageT = useTranslations("ErrorMessage");
   const loginMutation = useLoginMutation();
   const clearTokens = searchParams?.get("clearTokens");
   const setSocket = useAppStore((state) => state.setSocket);
   const setRole = useAppStore((state) => state.setRole);
+  const t = useTranslations("Login");
 
   const form = useForm<LoginBodyType>({
     resolver: zodResolver(LoginBody),
@@ -49,12 +51,15 @@ export default function LoginForm() {
       password: "",
     },
   });
+
   const router = useRouter();
+
   useEffect(() => {
     if (clearTokens) {
       setRole();
     }
   }, [clearTokens, setRole]);
+
   const onSubmit = async (data: LoginBodyType) => {
     // Khi nhấn submit thì React hook form sẽ validate cái form bằng zod schema ở client trước
     // Nếu không pass qua vòng này thì sẽ không gọi api
