@@ -26,7 +26,7 @@ import AutoPagination from '@/components/features/auto-pagination'
 import { TableListResType } from '@/schemaValidations/table.schema'
 import EditTable from '@/app/[locale]/manage/tables/edit-table'
 import AddTable from '@/app/[locale]/manage/tables/add-table'
-import { useDeleteTableMutation, useTableListQuery } from '@/queries/useTable'
+import { useDeleteTableMutation, useTableListQuery } from '@/hooks/use-table'
 import QRCodeTable from '@/components/features/qrcode-table'
 import { toast } from '@/hooks/use-toast'
 

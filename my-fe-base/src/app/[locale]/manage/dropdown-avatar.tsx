@@ -3,9 +3,9 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Link, useRouter } from '@/navigation'
-import { useLogoutMutation } from '@/queries/useAuth'
+import { useLogoutMutation } from '@/hooks/use-auth'
 import { handleErrorApi } from '@/lib/utils'
-import { useAccountMe } from '@/queries/useAccount'
+import { useAccountMe } from '@/hooks/use-account'
 import { useAppStore } from '@/components/features/app-provider'
 
 export default function DropdownAvatar() {

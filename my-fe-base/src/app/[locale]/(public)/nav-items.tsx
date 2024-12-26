@@ -2,7 +2,7 @@
 import { useAppStore } from '@/components/features/app-provider'
 import { Role } from '@/constants/type'
 import { cn, handleErrorApi } from '@/lib/utils'
-import { useLogoutMutation } from '@/queries/useAuth'
+import { useLogoutMutation } from '@/hooks/use-auth'
 import { RoleType } from '@/types/jwt.types'
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components'
 import { Link, useRouter } from '@/navigation'

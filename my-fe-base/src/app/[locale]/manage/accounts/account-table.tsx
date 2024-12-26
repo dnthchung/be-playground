@@ -27,7 +27,7 @@ import { createContext, useContext, useEffect, useState } from 'react'
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog'
 import { useSearchParams } from 'next/navigation'
 import AutoPagination from '@/components/features/auto-pagination'
-import { useDeleteAccountMutation, useGetAccountList } from '@/queries/useAccount'
+import { useDeleteAccountMutation, useGetAccountList } from '@/hooks/use-account'
 import { toast } from '@/hooks/use-toast'
 import { handleErrorApi } from '@/lib/utils'
 

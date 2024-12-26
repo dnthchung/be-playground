@@ -27,7 +27,7 @@ import AutoPagination from '@/components/features/auto-pagination'
 import { DishListResType } from '@/schemaValidations/dish.schema'
 import EditDish from '@/app/[locale]/manage/dishes/edit-dish'
 import AddDish from '@/app/[locale]/manage/dishes/add-dish'
-import { useDeleteDishMutation, useDishListQuery } from '@/queries/useDish'
+import { useDeleteDishMutation, useDishListQuery } from '@/hooks/use-dish'
 import { toast } from '@/hooks/use-toast'
 
 type DishItem = DishListResType['data'][0]

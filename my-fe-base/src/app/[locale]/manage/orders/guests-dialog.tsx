@@ -19,7 +19,7 @@ import { formatDateTimeToLocaleString, simpleMatchText } from '@/lib/utils'
 import { Input } from '@/components/ui/input'
 import { GetListGuestsResType } from '@/schemaValidations/account.schema'
 import { endOfDay, format, startOfDay } from 'date-fns'
-import { useGetGuestListQuery } from '@/queries/useAccount'
+import { useGetGuestListQuery } from '@/hooks/use-account'
 
 type GuestItem = GetListGuestsResType['data'][0]
 

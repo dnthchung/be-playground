@@ -18,9 +18,9 @@ import Quantity from '@/app/[locale]/guest/menu/quantity'
 import Image from 'next/image'
 import { cn, formatCurrency, handleErrorApi } from '@/lib/utils'
 import { DishStatus } from '@/constants/type'
-import { useDishListQuery } from '@/queries/useDish'
-import { useCreateOrderMutation } from '@/queries/useOrder'
-import { useCreateGuestMutation } from '@/queries/useAccount'
+import { useDishListQuery } from '@/hooks/use-dish'
+import { useCreateOrderMutation } from '@/hooks/use-order'
+import { useCreateGuestMutation } from '@/hooks/use-account'
 import { toast } from '@/hooks/use-toast'
 
 export default function AddOrder() {

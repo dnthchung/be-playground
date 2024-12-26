@@ -3,7 +3,7 @@
 import { useAppStore } from '@/components/features/app-provider'
 import { getAccessTokenFromLocalStorage, getRefreshTokenFromLocalStorage } from '@/lib/utils'
 import { useRouter } from '@/navigation'
-import { useLogoutMutation } from '@/queries/useAuth'
+import { useLogoutMutation } from '@/hooks/use-auth'
 import { useSearchParams } from 'next/navigation'
 import { memo, Suspense, useEffect, useRef } from 'react'
 

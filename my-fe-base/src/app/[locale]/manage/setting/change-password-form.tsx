@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form'
 import { ChangePasswordBody, ChangePasswordBodyType } from '@/schemaValidations/account.schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Form, FormField, FormItem, FormMessage } from '@/components/ui/form'
-import { useChangePasswordMutation } from '@/queries/useAccount'
+import { useChangePasswordMutation } from '@/hooks/use-account'
 import { toast } from '@/hooks/use-toast'
 import { handleErrorApi } from '@/lib/utils'
 

@@ -5,21 +5,15 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 export const useTableListQuery = () => {
   return useQuery({
     queryKey: ['tables'],
-    queryFn: tableApiRequest.list
+    queryFn: tableApiRequest.list,
   })
 }
 
-export const useGetTableQuery = ({
-  id,
-  enabled
-}: {
-  id: number
-  enabled: boolean
-}) => {
+export const useGetTableQuery = ({ id, enabled }: { id: number; enabled: boolean }) => {
   return useQuery({
     queryKey: ['tables', id],
     queryFn: () => tableApiRequest.getTable(id),
-    enabled
+    enabled,
   })
 }
 
@@ -29,9 +23,9 @@ export const useAddTableMutation = () => {
     mutationFn: tableApiRequest.add,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['tables']
+        queryKey: ['tables'],
       })
-    }
+    },
   })
 }
 
@@ -39,14 +33,13 @@ export const useUpdateTableMutation = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: ({ id, ...body }: UpdateTableBodyType & { id: number }) =>
-      tableApiRequest.updateTable(id, body),
+    mutationFn: ({ id, ...body }: UpdateTableBodyType & { id: number }) => tableApiRequest.updateTable(id, body),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['tables'],
-        exact: true
+        exact: true,
       })
-    }
+    },
   })
 }
 
@@ -57,8 +50,8 @@ export const useDeleteTableMutation = () => {
     mutationFn: tableApiRequest.deleteTable,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['tables']
+        queryKey: ['tables'],
       })
-    }
+    },
   })
 }

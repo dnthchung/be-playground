@@ -19,7 +19,7 @@ import {
 import { formatCurrency, getVietnameseDishStatus, simpleMatchText } from '@/lib/utils'
 import { Input } from '@/components/ui/input'
 import Image from 'next/image'
-import { useDishListQuery } from '@/queries/useDish'
+import { useDishListQuery } from '@/hooks/use-dish'
 
 type DishItem = DishListResType['data'][0]
 

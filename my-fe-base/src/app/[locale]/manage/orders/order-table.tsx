@@ -23,8 +23,8 @@ import { endOfDay, format, startOfDay } from 'date-fns'
 import TableSkeleton from '@/app/[locale]/manage/orders/table-skeleton'
 import { toast } from '@/hooks/use-toast'
 import { GuestCreateOrdersResType } from '@/schemaValidations/guest.schema'
-import { useGetOrderListQuery, useUpdateOrderMutation } from '@/queries/useOrder'
-import { useTableListQuery } from '@/queries/useTable'
+import { useGetOrderListQuery, useUpdateOrderMutation } from '@/hooks/use-order'
+import { useTableListQuery } from '@/hooks/use-table'
 import { useAppStore } from '@/components/features/app-provider'
 
 export const OrderTableContext = createContext({

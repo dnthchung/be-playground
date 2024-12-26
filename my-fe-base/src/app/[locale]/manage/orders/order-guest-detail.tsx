@@ -1,55 +1,29 @@
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { OrderStatus } from '@/constants/type'
-import {
-  OrderStatusIcon,
-  formatCurrency,
-  formatDateTimeToLocaleString,
-  formatDateTimeToTimeString,
-  getVietnameseOrderStatus,
-  handleErrorApi
-} from '@/lib/utils'
-import { usePayForGuestMutation } from '@/queries/useOrder'
-import {
-  GetOrdersResType,
-  PayGuestOrdersResType
-} from '@/schemaValidations/order.schema'
+import { OrderStatusIcon, formatCurrency, formatDateTimeToLocaleString, formatDateTimeToTimeString, getVietnameseOrderStatus, handleErrorApi } from '@/lib/utils'
+import { usePayForGuestMutation } from '@/hooks/use-order'
+import { GetOrdersResType, PayGuestOrdersResType } from '@/schemaValidations/order.schema'
 import Image from 'next/image'
 import { Fragment } from 'react'
 
 type Guest = GetOrdersResType['data'][0]['guest']
 type Orders = GetOrdersResType['data']
-export default function OrderGuestDetail({
-  guest,
-  orders,
-  onPaySuccess
-}: {
-  guest: Guest
-  orders: Orders
-  onPaySuccess?: (data: PayGuestOrdersResType) => void
-}) {
-  const ordersFilterToPurchase = guest
-    ? orders.filter(
-        (order) =>
-          order.status !== OrderStatus.Paid &&
-          order.status !== OrderStatus.Rejected
-      )
-    : []
-  const purchasedOrderFilter = guest
-    ? orders.filter((order) => order.status === OrderStatus.Paid)
-    : []
+export default function OrderGuestDetail({ guest, orders, onPaySuccess }: { guest: Guest; orders: Orders; onPaySuccess?: (data: PayGuestOrdersResType) => void }) {
+  const ordersFilterToPurchase = guest ? orders.filter((order) => order.status !== OrderStatus.Paid && order.status !== OrderStatus.Rejected) : []
+  const purchasedOrderFilter = guest ? orders.filter((order) => order.status === OrderStatus.Paid) : []
   const payForGuestMutation = usePayForGuestMutation()
 
   const pay = async () => {
     if (payForGuestMutation.isPending || !guest) return
     try {
       const result = await payForGuestMutation.mutateAsync({
-        guestId: guest.id
+        guestId: guest.id,
       })
       onPaySuccess && onPaySuccess(result.payload)
     } catch (error) {
       handleErrorApi({
-        error
+        error,
       })
     }
   }
@@ -79,56 +53,30 @@ export default function OrderGuestDetail({
             <div key={order.id} className='flex gap-2 items-center text-xs'>
               <span className='w-[10px]'>{index + 1}</span>
               <span title={getVietnameseOrderStatus(order.status)}>
-                {order.status === OrderStatus.Pending && (
-                  <OrderStatusIcon.Pending className='w-4 h-4' />
-                )}
-                {order.status === OrderStatus.Processing && (
-                  <OrderStatusIcon.Processing className='w-4 h-4' />
-                )}
-                {order.status === OrderStatus.Rejected && (
-                  <OrderStatusIcon.Rejected className='w-4 h-4 text-red-400' />
-                )}
-                {order.status === OrderStatus.Delivered && (
-                  <OrderStatusIcon.Delivered className='w-4 h-4' />
-                )}
-                {order.status === OrderStatus.Paid && (
-                  <OrderStatusIcon.Paid className='w-4 h-4 text-yellow-400' />
-                )}
+                {order.status === OrderStatus.Pending && <OrderStatusIcon.Pending className='w-4 h-4' />}
+                {order.status === OrderStatus.Processing && <OrderStatusIcon.Processing className='w-4 h-4' />}
+                {order.status === OrderStatus.Rejected && <OrderStatusIcon.Rejected className='w-4 h-4 text-red-400' />}
+                {order.status === OrderStatus.Delivered && <OrderStatusIcon.Delivered className='w-4 h-4' />}
+                {order.status === OrderStatus.Paid && <OrderStatusIcon.Paid className='w-4 h-4 text-yellow-400' />}
               </span>
-              <Image
-                src={order.dishSnapshot.image}
-                alt={order.dishSnapshot.name}
-                title={order.dishSnapshot.name}
-                width={30}
-                height={30}
-                className='h-[30px] w-[30px] rounded object-cover'
-              />
-              <span
-                className='truncate w-[70px] sm:w-[100px]'
-                title={order.dishSnapshot.name}
-              >
+              <Image src={order.dishSnapshot.image} alt={order.dishSnapshot.name} title={order.dishSnapshot.name} width={30} height={30} className='h-[30px] w-[30px] rounded object-cover' />
+              <span className='truncate w-[70px] sm:w-[100px]' title={order.dishSnapshot.name}>
                 {order.dishSnapshot.name}
               </span>
               <span className='font-semibold' title={`Tổng: ${order.quantity}`}>
                 x{order.quantity}
               </span>
-              <span className='italic'>
-                {formatCurrency(order.quantity * order.dishSnapshot.price)}
-              </span>
+              <span className='italic'>{formatCurrency(order.quantity * order.dishSnapshot.price)}</span>
               <span
                 className='hidden sm:inline'
-                title={`Tạo: ${formatDateTimeToLocaleString(
-                  order.createdAt
-                )} | Cập nhật: ${formatDateTimeToLocaleString(order.updatedAt)}
+                title={`Tạo: ${formatDateTimeToLocaleString(order.createdAt)} | Cập nhật: ${formatDateTimeToLocaleString(order.updatedAt)}
           `}
               >
                 {formatDateTimeToLocaleString(order.createdAt)}
               </span>
               <span
                 className='sm:hidden'
-                title={`Tạo: ${formatDateTimeToLocaleString(
-                  order.createdAt
-                )} | Cập nhật: ${formatDateTimeToLocaleString(order.updatedAt)}
+                title={`Tạo: ${formatDateTimeToLocaleString(order.createdAt)} | Cập nhật: ${formatDateTimeToLocaleString(order.updatedAt)}
           `}
               >
                 {formatDateTimeToTimeString(order.createdAt)}
@@ -145,7 +93,7 @@ export default function OrderGuestDetail({
             {formatCurrency(
               ordersFilterToPurchase.reduce((acc, order) => {
                 return acc + order.quantity * order.dishSnapshot.price
-              }, 0)
+              }, 0),
             )}
           </span>
         </Badge>
@@ -157,20 +105,14 @@ export default function OrderGuestDetail({
             {formatCurrency(
               purchasedOrderFilter.reduce((acc, order) => {
                 return acc + order.quantity * order.dishSnapshot.price
-              }, 0)
+              }, 0),
             )}
           </span>
         </Badge>
       </div>
 
       <div>
-        <Button
-          className='w-full'
-          size={'sm'}
-          variant={'secondary'}
-          disabled={ordersFilterToPurchase.length === 0}
-          onClick={pay}
-        >
+        <Button className='w-full' size={'sm'} variant={'secondary'} disabled={ordersFilterToPurchase.length === 0} onClick={pay}>
           Thanh toán tất cả ({ordersFilterToPurchase.length} đơn)
         </Button>
       </div>

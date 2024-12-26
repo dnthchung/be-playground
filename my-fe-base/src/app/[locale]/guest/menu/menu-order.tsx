@@ -1,12 +1,12 @@
 'use client'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
-import { useDishListQuery } from '@/queries/useDish'
+import { useDishListQuery } from '@/hooks/use-dish'
 import { cn, formatCurrency, handleErrorApi } from '@/lib/utils'
 import Quantity from '@/app/[locale]/guest/menu/quantity'
 import { useMemo, useState } from 'react'
 import { GuestCreateOrdersBodyType } from '@/schemaValidations/guest.schema'
-import { useGuestOrderMutation } from '@/queries/useGuest'
+import { useGuestOrderMutation } from '@/hooks/use-guest'
 import { DishStatus } from '@/constants/type'
 import { useRouter } from '@/navigation'
 
@@ -46,7 +46,7 @@ export default function MenuOrder() {
       router.push(`/guest/orders`)
     } catch (error) {
       handleErrorApi({
-        error
+        error,
       })
     }
   }
@@ -58,48 +58,25 @@ export default function MenuOrder() {
           <div
             key={dish.id}
             className={cn('flex gap-4', {
-              'pointer-events-none': dish.status === DishStatus.Unavailable
+              'pointer-events-none': dish.status === DishStatus.Unavailable,
             })}
           >
             <div className='flex-shrink-0 relative'>
-              {dish.status === DishStatus.Unavailable && (
-                <span className='absolute inset-0 flex items-center justify-center text-sm'>
-                  Hết hàng
-                </span>
-              )}
-              <Image
-                src={dish.image}
-                alt={dish.name}
-                height={100}
-                width={100}
-                quality={100}
-                className='object-cover w-[80px] h-[80px] rounded-md'
-              />
+              {dish.status === DishStatus.Unavailable && <span className='absolute inset-0 flex items-center justify-center text-sm'>Hết hàng</span>}
+              <Image src={dish.image} alt={dish.name} height={100} width={100} quality={100} className='object-cover w-[80px] h-[80px] rounded-md' />
             </div>
             <div className='space-y-1'>
               <h3 className='text-sm'>{dish.name}</h3>
               <p className='text-xs'>{dish.description}</p>
-              <p className='text-xs font-semibold'>
-                {formatCurrency(dish.price)}
-              </p>
+              <p className='text-xs font-semibold'>{formatCurrency(dish.price)}</p>
             </div>
             <div className='flex-shrink-0 ml-auto flex justify-center items-center'>
-              <Quantity
-                onChange={(value) => handleQuantityChange(dish.id, value)}
-                value={
-                  orders.find((order) => order.dishId === dish.id)?.quantity ??
-                  0
-                }
-              />
+              <Quantity onChange={(value) => handleQuantityChange(dish.id, value)} value={orders.find((order) => order.dishId === dish.id)?.quantity ?? 0} />
             </div>
           </div>
         ))}
       <div className='sticky bottom-0'>
-        <Button
-          className='w-full justify-between'
-          onClick={handleOrder}
-          disabled={orders.length === 0}
-        >
+        <Button className='w-full justify-between' onClick={handleOrder} disabled={orders.length === 0}>
           <span>Đặt hàng · {orders.length} món</span>
           <span>{formatCurrency(totalPrice)}</span>
         </Button>

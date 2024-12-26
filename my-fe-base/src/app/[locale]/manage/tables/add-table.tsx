@@ -12,7 +12,7 @@ import { getVietnameseTableStatus, handleErrorApi } from '@/lib/utils'
 import { CreateTableBody, CreateTableBodyType } from '@/schemaValidations/table.schema'
 import { TableStatus, TableStatusValues } from '@/constants/type'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { useAddTableMutation } from '@/queries/useTable'
+import { useAddTableMutation } from '@/hooks/use-table'
 import { toast } from '@/hooks/use-toast'
 
 export default function AddTable() {

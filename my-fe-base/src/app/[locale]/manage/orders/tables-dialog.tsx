@@ -19,7 +19,7 @@ import { cn, getVietnameseTableStatus, simpleMatchText } from '@/lib/utils'
 import { Input } from '@/components/ui/input'
 import { TableListResType } from '@/schemaValidations/table.schema'
 import { TableStatus } from '@/constants/type'
-import { useTableListQuery } from '@/queries/useTable'
+import { useTableListQuery } from '@/hooks/use-table'
 
 type TableItem = TableListResType['data'][0]
 

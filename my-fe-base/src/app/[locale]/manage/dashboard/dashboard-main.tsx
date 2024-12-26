@@ -1,13 +1,13 @@
 'use client'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { useState } from 'react'
+import { endOfDay, format, startOfDay } from 'date-fns'
+
+import { Card, CardContent, CardHeader, CardTitle, Button, Input } from '@/components'
+import { formatCurrency } from '@/lib/utils'
+import { useDashboardIndicator } from '@/hooks/use-indicator'
+
 import { RevenueLineChart } from '@/app/[locale]/manage/dashboard/revenue-line-chart'
 import { DishBarChart } from '@/app/[locale]/manage/dashboard/dish-bar-chart'
-import { formatCurrency } from '@/lib/utils'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { endOfDay, format, startOfDay } from 'date-fns'
-import { useState } from 'react'
-import { useDashboardIndicator } from '@/queries/useIndicator'
 
 const initFromDate = startOfDay(new Date())
 const initToDate = endOfDay(new Date())
@@ -16,7 +16,7 @@ export default function DashboardMain() {
   const [toDate, setToDate] = useState(initToDate)
   const { data } = useDashboardIndicator({
     fromDate,
-    toDate
+    toDate,
   })
   const revenue = data?.payload.data.revenue ?? 0
   const guestCount = data?.payload.data.guestCount ?? 0
@@ -45,12 +45,7 @@ export default function DashboardMain() {
         </div>
         <div className='flex items-center'>
           <span className='mr-2'>Đến</span>
-          <Input
-            type='datetime-local'
-            placeholder='Đến ngày'
-            value={format(toDate, 'yyyy-MM-dd HH:mm').replace(' ', 'T')}
-            onChange={(event) => setToDate(new Date(event.target.value))}
-          />
+          <Input type='datetime-local' placeholder='Đến ngày' value={format(toDate, 'yyyy-MM-dd HH:mm').replace(' ', 'T')} onChange={(event) => setToDate(new Date(event.target.value))} />
         </div>
         <Button className='' variant={'outline'} onClick={resetDateFilter}>
           Reset
@@ -59,9 +54,7 @@ export default function DashboardMain() {
       <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-4'>
         <Card>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-sm font-medium'>
-              Tổng doanh thu
-            </CardTitle>
+            <CardTitle className='text-sm font-medium'>Tổng doanh thu</CardTitle>
             <svg
               xmlns='http://www.w3.org/2000/svg'
               viewBox='0 0 24 24'
@@ -126,9 +119,7 @@ export default function DashboardMain() {
         </Card>
         <Card>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-sm font-medium'>
-              Bàn đang phục vụ
-            </CardTitle>
+            <CardTitle className='text-sm font-medium'>Bàn đang phục vụ</CardTitle>
             <svg
               xmlns='http://www.w3.org/2000/svg'
               viewBox='0 0 24 24'

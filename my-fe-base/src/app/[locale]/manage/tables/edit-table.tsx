@@ -13,7 +13,7 @@ import { TableStatus, TableStatusValues } from '@/constants/type'
 import { Switch } from '@/components/ui/switch'
 import { Link } from '@/navigation'
 import { useEffect } from 'react'
-import { useGetTableQuery, useUpdateTableMutation } from '@/queries/useTable'
+import { useGetTableQuery, useUpdateTableMutation } from '@/hooks/use-table'
 import { toast } from '@/hooks/use-toast'
 import QRCodeTable from '@/components/features/qrcode-table'
 

@@ -14,7 +14,7 @@ import { DishesDialog } from '@/app/[locale]/manage/orders/dishes-dialog'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { useEffect, useState } from 'react'
 import { DishListResType } from '@/schemaValidations/dish.schema'
-import { useGetOrderDetailQuery, useUpdateOrderMutation } from '@/queries/useOrder'
+import { useGetOrderDetailQuery, useUpdateOrderMutation } from '@/hooks/use-order'
 import { toast } from '@/hooks/use-toast'
 
 export default function EditOrder({ id, setId, onSubmitSuccess }: { id?: number | undefined; setId: (value: number | undefined) => void; onSubmitSuccess?: () => void }) {

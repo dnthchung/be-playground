@@ -14,8 +14,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { UpdateDishBody, UpdateDishBodyType } from '@/schemaValidations/dish.schema'
 import { DishStatus, DishStatusValues } from '@/constants/type'
 import { Textarea } from '@/components/ui/textarea'
-import { useUploadMediaMutation } from '@/queries/useMedia'
-import { useGetDishQuery, useUpdateDishMutation } from '@/queries/useDish'
+import { useUploadMediaMutation } from '@/hooks/use-media'
+import { useGetDishQuery, useUpdateDishMutation } from '@/hooks/use-dish'
 import { toast } from '@/hooks/use-toast'
 import revalidateApiRequest from '@/apiRequests/revalidate'
 
