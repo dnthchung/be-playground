@@ -1,16 +1,20 @@
 //Layout cho tất cả các trang trong app. Bọc các thứ ở đây.
 import { Inter as FontSans } from 'next/font/google'
+import { NextIntlClientProvider } from 'next-intl'
+import { setRequestLocale } from 'next-intl/server'
+import { getMessages, getTranslations } from 'next-intl/server'
+import NextTopLoader from 'nextjs-toploader'
+
 import './globals.css'
 import { cn } from '@/lib/utils'
-import { Toaster } from '@/components'
+
 import { ThemeProvider } from '@/components/features/theme-provider'
 import AppProvider from '@/components/features/app-provider'
-import { NextIntlClientProvider } from 'next-intl'
-import { getMessages, getTranslations } from 'next-intl/server'
+
+import { Toaster } from '@/components'
+import { Footer } from '@/components'
+
 import { Locale, locales } from '@/config'
-import { setRequestLocale } from 'next-intl/server'
-import NextTopLoader from 'nextjs-toploader'
-import Footer from '@/components/layouts/footer'
 import { baseOpenGraph } from '@/shared-metadata'
 import GoogleTag from '@/components/features/google-tag'
 

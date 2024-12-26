@@ -4,6 +4,7 @@
 export * from './features/search-params-loader'
 
 //Widget - loading ...
+export { default as Footer } from './widgets/footer'
 
 //shadcn - Ui
 export { Button } from './shadcn/button'

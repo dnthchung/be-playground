@@ -49,3 +49,5 @@ export default function Footer() {
     </footer>
   )
 }
+
+//path : my-fe-base/src/components/widgets/footer.tsx
