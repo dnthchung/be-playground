@@ -1,5 +1,5 @@
 'use client'
-import { useAppStore } from '@/components/app-provider'
+import { useAppStore } from '@/components/features/app-provider'
 import { Role } from '@/constants/type'
 import { cn, handleErrorApi } from '@/lib/utils'
 import { useLogoutMutation } from '@/queries/useAuth'

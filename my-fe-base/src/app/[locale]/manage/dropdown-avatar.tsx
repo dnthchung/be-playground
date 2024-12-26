@@ -1,19 +1,12 @@
 'use client'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Link, useRouter } from '@/navigation'
 import { useLogoutMutation } from '@/queries/useAuth'
 import { handleErrorApi } from '@/lib/utils'
 import { useAccountMe } from '@/queries/useAccount'
-import { useAppStore } from '@/components/app-provider'
+import { useAppStore } from '@/components/features/app-provider'
 
 export default function DropdownAvatar() {
   const logoutMutation = useLogoutMutation()
@@ -31,26 +24,17 @@ export default function DropdownAvatar() {
       router.push('/')
     } catch (error: any) {
       handleErrorApi({
-        error
+        error,
       })
     }
   }
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          variant='outline'
-          size='icon'
-          className='overflow-hidden rounded-full'
-        >
+        <Button variant='outline' size='icon' className='overflow-hidden rounded-full'>
           <Avatar>
-            <AvatarImage
-              src={account?.avatar ?? undefined}
-              alt={account?.name}
-            />
-            <AvatarFallback>
-              {account?.name.slice(0, 2).toUpperCase()}
-            </AvatarFallback>
+            <AvatarImage src={account?.avatar ?? undefined} alt={account?.name} />
+            <AvatarFallback>{account?.name.slice(0, 2).toUpperCase()}</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>

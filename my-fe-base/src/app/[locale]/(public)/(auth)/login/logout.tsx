@@ -1,10 +1,7 @@
 'use client'
 
-import { useAppStore } from '@/components/app-provider'
-import {
-  getAccessTokenFromLocalStorage,
-  getRefreshTokenFromLocalStorage
-} from '@/lib/utils'
+import { useAppStore } from '@/components/features/app-provider'
+import { getAccessTokenFromLocalStorage, getRefreshTokenFromLocalStorage } from '@/lib/utils'
 import { useRouter } from '@/navigation'
 import { useLogoutMutation } from '@/queries/useAuth'
 import { useSearchParams } from 'next/navigation'
@@ -20,13 +17,7 @@ function LogoutComponent() {
   const accessTokenFromUrl = searchParams.get('accessToken')
   const ref = useRef<any>(null)
   useEffect(() => {
-    if (
-      !ref.current &&
-      ((refreshTokenFromUrl &&
-        refreshTokenFromUrl === getRefreshTokenFromLocalStorage()) ||
-        (accessTokenFromUrl &&
-          accessTokenFromUrl === getAccessTokenFromLocalStorage()))
-    ) {
+    if (!ref.current && ((refreshTokenFromUrl && refreshTokenFromUrl === getRefreshTokenFromLocalStorage()) || (accessTokenFromUrl && accessTokenFromUrl === getAccessTokenFromLocalStorage()))) {
       ref.current = mutateAsync
       mutateAsync().then((res) => {
         setTimeout(() => {
@@ -38,14 +29,7 @@ function LogoutComponent() {
     } else if (accessTokenFromUrl !== getAccessTokenFromLocalStorage()) {
       router.push('/')
     }
-  }, [
-    mutateAsync,
-    router,
-    refreshTokenFromUrl,
-    accessTokenFromUrl,
-    setRole,
-    disconnectSocket
-  ])
+  }, [mutateAsync, router, refreshTokenFromUrl, accessTokenFromUrl, setRole, disconnectSocket])
   return null
 }
 

@@ -15,7 +15,7 @@ import { Link } from '@/navigation'
 import { useEffect } from 'react'
 import { useGetTableQuery, useUpdateTableMutation } from '@/queries/useTable'
 import { toast } from '@/hooks/use-toast'
-import QRCodeTable from '@/components/qrcode-table'
+import QRCodeTable from '@/components/features/qrcode-table'
 
 export default function EditTable({ id, setId, onSubmitSuccess }: { id?: number | undefined; setId: (value: number | undefined) => void; onSubmitSuccess?: () => void }) {
   const updateTableMutation = useUpdateTableMutation()

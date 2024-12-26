@@ -1,6 +1,6 @@
 'use client'
 
-import { useAppStore } from '@/components/app-provider'
+import { useAppStore } from '@/components/features/app-provider'
 import { Badge } from '@/components/ui/badge'
 import { toast } from '@/hooks/use-toast'
 import { OrderStatus } from '@/constants/type'

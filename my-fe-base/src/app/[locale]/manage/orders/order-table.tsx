@@ -7,7 +7,7 @@ import AddOrder from '@/app/[locale]/manage/orders/add-order'
 import EditOrder from '@/app/[locale]/manage/orders/edit-order'
 import { createContext, useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
-import AutoPagination from '@/components/auto-pagination'
+import AutoPagination from '@/components/features/auto-pagination'
 import { getVietnameseOrderStatus, handleErrorApi } from '@/lib/utils'
 import { OrderStatusValues } from '@/constants/type'
 import OrderStatics from '@/app/[locale]/manage/orders/order-statics'
@@ -25,7 +25,7 @@ import { toast } from '@/hooks/use-toast'
 import { GuestCreateOrdersResType } from '@/schemaValidations/guest.schema'
 import { useGetOrderListQuery, useUpdateOrderMutation } from '@/queries/useOrder'
 import { useTableListQuery } from '@/queries/useTable'
-import { useAppStore } from '@/components/app-provider'
+import { useAppStore } from '@/components/features/app-provider'
 
 export const OrderTableContext = createContext({
   setOrderIdEdit: (value: number | undefined) => {},

@@ -1,20 +1,7 @@
 import { Button } from '@/components/ui/button'
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger
-} from '@/components/ui/dialog'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow
-} from '@/components/ui/table'
-import AutoPagination from '@/components/auto-pagination'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import AutoPagination from '@/components/features/auto-pagination'
 import { useEffect, useState } from 'react'
 import {
   ColumnDef,
@@ -26,7 +13,7 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  useReactTable
+  useReactTable,
 } from '@tanstack/react-table'
 import { formatDateTimeToLocaleString, simpleMatchText } from '@/lib/utils'
 import { Input } from '@/components/ui/input'
@@ -47,52 +34,36 @@ export const columns: ColumnDef<GuestItem>[] = [
     ),
     filterFn: (row, columnId, filterValue: string) => {
       if (filterValue === undefined) return true
-      return simpleMatchText(
-        row.original.name + String(row.original.id),
-        String(filterValue)
-      )
-    }
+      return simpleMatchText(row.original.name + String(row.original.id), String(filterValue))
+    },
   },
   {
     accessorKey: 'tableNumber',
     header: 'Số bàn',
-    cell: ({ row }) => (
-      <div className='capitalize'>{row.getValue('tableNumber')}</div>
-    ),
+    cell: ({ row }) => <div className='capitalize'>{row.getValue('tableNumber')}</div>,
     filterFn: (row, columnId, filterValue: string) => {
       if (filterValue === undefined) return true
-      return simpleMatchText(
-        String(row.original.tableNumber),
-        String(filterValue)
-      )
-    }
+      return simpleMatchText(String(row.original.tableNumber), String(filterValue))
+    },
   },
   {
     accessorKey: 'createdAt',
     header: () => <div>Tạo</div>,
-    cell: ({ row }) => (
-      <div className='flex items-center space-x-4 text-sm'>
-        {formatDateTimeToLocaleString(row.getValue('createdAt'))}
-      </div>
-    )
-  }
+    cell: ({ row }) => <div className='flex items-center space-x-4 text-sm'>{formatDateTimeToLocaleString(row.getValue('createdAt'))}</div>,
+  },
 ]
 
 const PAGE_SIZE = 10
 const initFromDate = startOfDay(new Date())
 const initToDate = endOfDay(new Date())
 
-export default function GuestsDialog({
-  onChoose
-}: {
-  onChoose: (guest: GuestItem) => void
-}) {
+export default function GuestsDialog({ onChoose }: { onChoose: (guest: GuestItem) => void }) {
   const [open, setOpen] = useState(false)
   const [fromDate, setFromDate] = useState(initFromDate)
   const [toDate, setToDate] = useState(initToDate)
   const guestListQuery = useGetGuestListQuery({
     fromDate,
-    toDate
+    toDate,
   })
   const data = guestListQuery.data?.payload.data ?? []
   const [sorting, setSorting] = useState<SortingState>([])
@@ -101,7 +72,7 @@ export default function GuestsDialog({
   const [rowSelection, setRowSelection] = useState({})
   const [pagination, setPagination] = useState({
     pageIndex: 0, // Gía trị mặc định ban đầu, không có ý nghĩa khi data được fetch bất đồng bộ
-    pageSize: PAGE_SIZE //default page size
+    pageSize: PAGE_SIZE, //default page size
   })
 
   const table = useReactTable({
@@ -122,14 +93,14 @@ export default function GuestsDialog({
       columnFilters,
       columnVisibility,
       rowSelection,
-      pagination
-    }
+      pagination,
+    },
   })
 
   useEffect(() => {
     table.setPagination({
       pageIndex: 0,
-      pageSize: PAGE_SIZE
+      pageSize: PAGE_SIZE,
     })
   }, [table])
 
@@ -162,51 +133,28 @@ export default function GuestsDialog({
                   placeholder='Từ ngày'
                   className='text-sm'
                   value={format(fromDate, 'yyyy-MM-dd HH:mm').replace(' ', 'T')}
-                  onChange={(event) =>
-                    setFromDate(new Date(event.target.value))
-                  }
+                  onChange={(event) => setFromDate(new Date(event.target.value))}
                 />
               </div>
               <div className='flex items-center'>
                 <span className='mr-2'>Đến</span>
-                <Input
-                  type='datetime-local'
-                  placeholder='Đến ngày'
-                  value={format(toDate, 'yyyy-MM-dd HH:mm').replace(' ', 'T')}
-                  onChange={(event) => setToDate(new Date(event.target.value))}
-                />
+                <Input type='datetime-local' placeholder='Đến ngày' value={format(toDate, 'yyyy-MM-dd HH:mm').replace(' ', 'T')} onChange={(event) => setToDate(new Date(event.target.value))} />
               </div>
-              <Button
-                className=''
-                variant={'outline'}
-                onClick={resetDateFilter}
-              >
+              <Button className='' variant={'outline'} onClick={resetDateFilter}>
                 Reset
               </Button>
             </div>
             <div className='flex items-center py-4 gap-2'>
               <Input
                 placeholder='Tên hoặc Id'
-                value={
-                  (table.getColumn('name')?.getFilterValue() as string) ?? ''
-                }
-                onChange={(event) =>
-                  table.getColumn('name')?.setFilterValue(event.target.value)
-                }
+                value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
+                onChange={(event) => table.getColumn('name')?.setFilterValue(event.target.value)}
                 className='w-[170px]'
               />
               <Input
                 placeholder='Số bàn'
-                value={
-                  (table
-                    .getColumn('tableNumber')
-                    ?.getFilterValue() as string) ?? ''
-                }
-                onChange={(event) =>
-                  table
-                    .getColumn('tableNumber')
-                    ?.setFilterValue(event.target.value)
-                }
+                value={(table.getColumn('tableNumber')?.getFilterValue() as string) ?? ''}
+                onChange={(event) => table.getColumn('tableNumber')?.setFilterValue(event.target.value)}
                 className='w-[80px]'
               />
             </div>
@@ -216,16 +164,7 @@ export default function GuestsDialog({
                   {table.getHeaderGroups().map((headerGroup) => (
                     <TableRow key={headerGroup.id}>
                       {headerGroup.headers.map((header) => {
-                        return (
-                          <TableHead key={header.id}>
-                            {header.isPlaceholder
-                              ? null
-                              : flexRender(
-                                  header.column.columnDef.header,
-                                  header.getContext()
-                                )}
-                          </TableHead>
-                        )
+                        return <TableHead key={header.id}>{header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}</TableHead>
                       })}
                     </TableRow>
                   ))}
@@ -242,21 +181,13 @@ export default function GuestsDialog({
                         className='cursor-pointer'
                       >
                         {row.getVisibleCells().map((cell) => (
-                          <TableCell key={cell.id}>
-                            {flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext()
-                            )}
-                          </TableCell>
+                          <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
                         ))}
                       </TableRow>
                     ))
                   ) : (
                     <TableRow>
-                      <TableCell
-                        colSpan={columns.length}
-                        className='h-24 text-center'
-                      >
+                      <TableCell colSpan={columns.length} className='h-24 text-center'>
                         No results.
                       </TableCell>
                     </TableRow>
@@ -266,9 +197,7 @@ export default function GuestsDialog({
             </div>
             <div className='flex items-center justify-end space-x-2 py-4'>
               <div className='text-xs text-muted-foreground py-4 flex-1 '>
-                Hiển thị{' '}
-                <strong>{table.getPaginationRowModel().rows.length}</strong>{' '}
-                trong <strong>{data.length}</strong> kết quả
+                Hiển thị <strong>{table.getPaginationRowModel().rows.length}</strong> trong <strong>{data.length}</strong> kết quả
               </div>
               <div>
                 <AutoPagination
@@ -277,7 +206,7 @@ export default function GuestsDialog({
                   onClick={(pageNumber) =>
                     table.setPagination({
                       pageIndex: pageNumber - 1,
-                      pageSize: PAGE_SIZE
+                      pageSize: PAGE_SIZE,
                     })
                   }
                   isLink={false}
