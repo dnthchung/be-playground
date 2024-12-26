@@ -2,7 +2,7 @@
 import { Inter as FontSans } from 'next/font/google'
 import './globals.css'
 import { cn } from '@/lib/utils'
-import { Toaster } from '@/components/ui/toaster'
+import { Toaster } from '@/components'
 import { ThemeProvider } from '@/components/theme-provider'
 import AppProvider from '@/components/app-provider'
 import { NextIntlClientProvider } from 'next-intl'

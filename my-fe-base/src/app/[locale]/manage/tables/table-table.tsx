@@ -11,38 +11,15 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  useReactTable
+  useReactTable,
 } from '@tanstack/react-table'
 import { Button } from '@/components/ui/button'
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Input } from '@/components/ui/input'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow
-} from '@/components/ui/table'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { createContext, useContext, useEffect, useState } from 'react'
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle
-} from '@/components/ui/alert-dialog'
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog'
 import { getVietnameseTableStatus, handleErrorApi } from '@/lib/utils'
 import { useSearchParams } from 'next/navigation'
 import AutoPagination from '@/components/auto-pagination'
@@ -51,7 +28,7 @@ import EditTable from '@/app/[locale]/manage/tables/edit-table'
 import AddTable from '@/app/[locale]/manage/tables/add-table'
 import { useDeleteTableMutation, useTableListQuery } from '@/queries/useTable'
 import QRCodeTable from '@/components/qrcode-table'
-import { toast } from '@/components/ui/use-toast'
+import { toast } from '@/hooks/use-toast'
 
 type TableItem = TableListResType['data'][0]
 
@@ -64,46 +41,37 @@ const TableTableContext = createContext<{
   setTableIdEdit: (value: number | undefined) => {},
   tableIdEdit: undefined,
   tableDelete: null,
-  setTableDelete: (value: TableItem | null) => {}
+  setTableDelete: (value: TableItem | null) => {},
 })
 
 export const columns: ColumnDef<TableItem>[] = [
   {
     accessorKey: 'number',
     header: 'Số bàn',
-    cell: ({ row }) => (
-      <div className='capitalize'>{row.getValue('number')}</div>
-    ),
+    cell: ({ row }) => <div className='capitalize'>{row.getValue('number')}</div>,
     filterFn: (rows, columnId, filterValue) => {
       if (!filterValue) return true
       return String(filterValue) === String(rows.getValue('number'))
-    }
+    },
   },
   {
     accessorKey: 'capacity',
     header: 'Sức chứa',
-    cell: ({ row }) => (
-      <div className='capitalize'>{row.getValue('capacity')}</div>
-    )
+    cell: ({ row }) => <div className='capitalize'>{row.getValue('capacity')}</div>,
   },
   {
     accessorKey: 'status',
     header: 'Trạng thái',
-    cell: ({ row }) => (
-      <div>{getVietnameseTableStatus(row.getValue('status'))}</div>
-    )
+    cell: ({ row }) => <div>{getVietnameseTableStatus(row.getValue('status'))}</div>,
   },
   {
     accessorKey: 'token',
     header: 'QR Code',
     cell: ({ row }) => (
       <div>
-        <QRCodeTable
-          token={row.getValue('token')}
-          tableNumber={row.getValue('number')}
-        />
+        <QRCodeTable token={row.getValue('token')} tableNumber={row.getValue('number')} />
       </div>
-    )
+    ),
   },
   {
     id: 'actions',
@@ -133,17 +101,11 @@ export const columns: ColumnDef<TableItem>[] = [
           </DropdownMenuContent>
         </DropdownMenu>
       )
-    }
-  }
+    },
+  },
 ]
 
-function AlertDialogDeleteTable({
-  tableDelete,
-  setTableDelete
-}: {
-  tableDelete: TableItem | null
-  setTableDelete: (value: TableItem | null) => void
-}) {
+function AlertDialogDeleteTable({ tableDelete, setTableDelete }: { tableDelete: TableItem | null; setTableDelete: (value: TableItem | null) => void }) {
   const { mutateAsync } = useDeleteTableMutation()
   const deleteTable = async () => {
     if (tableDelete) {
@@ -151,11 +113,11 @@ function AlertDialogDeleteTable({
         const result = await mutateAsync(tableDelete.number)
         setTableDelete(null)
         toast({
-          title: result.payload.message
+          title: result.payload.message,
         })
       } catch (error) {
         handleErrorApi({
-          error
+          error,
         })
       }
     }
@@ -173,11 +135,7 @@ function AlertDialogDeleteTable({
         <AlertDialogHeader>
           <AlertDialogTitle>Xóa bàn ăn?</AlertDialogTitle>
           <AlertDialogDescription>
-            Bàn{' '}
-            <span className='bg-foreground text-primary-foreground rounded px-1'>
-              {tableDelete?.number}
-            </span>{' '}
-            sẽ bị xóa vĩnh viễn
+            Bàn <span className='bg-foreground text-primary-foreground rounded px-1'>{tableDelete?.number}</span> sẽ bị xóa vĩnh viễn
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -205,7 +163,7 @@ export default function TableTable() {
   const [rowSelection, setRowSelection] = useState({})
   const [pagination, setPagination] = useState({
     pageIndex, // Gía trị mặc định ban đầu, không có ý nghĩa khi data được fetch bất đồng bộ
-    pageSize: PAGE_SIZE //default page size
+    pageSize: PAGE_SIZE, //default page size
   })
 
   const table = useReactTable({
@@ -226,33 +184,26 @@ export default function TableTable() {
       columnFilters,
       columnVisibility,
       rowSelection,
-      pagination
-    }
+      pagination,
+    },
   })
 
   useEffect(() => {
     table.setPagination({
       pageIndex,
-      pageSize: PAGE_SIZE
+      pageSize: PAGE_SIZE,
     })
   }, [table, pageIndex])
 
   return (
-    <TableTableContext.Provider
-      value={{ tableIdEdit, setTableIdEdit, tableDelete, setTableDelete }}
-    >
+    <TableTableContext.Provider value={{ tableIdEdit, setTableIdEdit, tableDelete, setTableDelete }}>
       <div className='w-full'>
         <EditTable id={tableIdEdit} setId={setTableIdEdit} />
-        <AlertDialogDeleteTable
-          tableDelete={tableDelete}
-          setTableDelete={setTableDelete}
-        />
+        <AlertDialogDeleteTable tableDelete={tableDelete} setTableDelete={setTableDelete} />
         <div className='flex items-center py-4'>
           <Input
             placeholder='Lọc số bàn'
-            value={
-              (table.getColumn('number')?.getFilterValue() as string) ?? ''
-            }
+            value={(table.getColumn('number')?.getFilterValue() as string) ?? ''}
             onChange={(event) => {
               table.getColumn('number')?.setFilterValue(event.target.value)
             }}
@@ -268,16 +219,7 @@ export default function TableTable() {
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
-                    return (
-                      <TableHead key={header.id}>
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                      </TableHead>
-                    )
+                    return <TableHead key={header.id}>{header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}</TableHead>
                   })}
                 </TableRow>
               ))}
@@ -285,26 +227,15 @@ export default function TableTable() {
             <TableBody>
               {table.getRowModel().rows?.length ? (
                 table.getRowModel().rows.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    data-state={row.getIsSelected() && 'selected'}
-                  >
+                  <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
                     {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </TableCell>
+                      <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
                     ))}
                   </TableRow>
                 ))
               ) : (
                 <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className='h-24 text-center'
-                  >
+                  <TableCell colSpan={columns.length} className='h-24 text-center'>
                     No results.
                   </TableCell>
                 </TableRow>
@@ -314,16 +245,10 @@ export default function TableTable() {
         </div>
         <div className='flex items-center justify-end space-x-2 py-4'>
           <div className='text-xs text-muted-foreground py-4 flex-1 '>
-            Hiển thị{' '}
-            <strong>{table.getPaginationRowModel().rows.length}</strong> trong{' '}
-            <strong>{data.length}</strong> kết quả
+            Hiển thị <strong>{table.getPaginationRowModel().rows.length}</strong> trong <strong>{data.length}</strong> kết quả
           </div>
           <div>
-            <AutoPagination
-              page={table.getState().pagination.pageIndex + 1}
-              pageSize={table.getPageCount()}
-              pathname='/manage/tables'
-            />
+            <AutoPagination page={table.getState().pagination.pageIndex + 1} pageSize={table.getPageCount()} pathname='/manage/tables' />
           </div>
         </div>
       </div>

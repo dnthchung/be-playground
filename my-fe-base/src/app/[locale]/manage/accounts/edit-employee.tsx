@@ -1,59 +1,29 @@
 'use client'
 import { Button } from '@/components/ui/button'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle
-} from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import {
-  UpdateEmployeeAccountBody,
-  UpdateEmployeeAccountBodyType
-} from '@/schemaValidations/account.schema'
+import { UpdateEmployeeAccountBody, UpdateEmployeeAccountBodyType } from '@/schemaValidations/account.schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Upload } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage
-} from '@/components/ui/form'
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Switch } from '@/components/ui/switch'
 import { useGetAccount, useUpdateAccountMutation } from '@/queries/useAccount'
 import { useUploadMediaMutation } from '@/queries/useMedia'
-import { toast } from '@/components/ui/use-toast'
+import { toast } from '@/hooks/use-toast'
 import { handleErrorApi } from '@/lib/utils'
 import { Role, RoleValues } from '@/constants/type'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
-export default function EditEmployee({
-  id,
-  setId,
-  onSubmitSuccess
-}: {
-  id?: number | undefined
-  setId: (value: number | undefined) => void
-  onSubmitSuccess?: () => void
-}) {
+export default function EditEmployee({ id, setId, onSubmitSuccess }: { id?: number | undefined; setId: (value: number | undefined) => void; onSubmitSuccess?: () => void }) {
   const [file, setFile] = useState<File | null>(null)
   const avatarInputRef = useRef<HTMLInputElement | null>(null)
   const { data } = useGetAccount({
     id: id as number,
-    enabled: Boolean(id)
+    enabled: Boolean(id),
   })
   const updateAccountMutation = useUpdateAccountMutation()
   const uploadMediaMutation = useUploadMediaMutation()
@@ -67,8 +37,8 @@ export default function EditEmployee({
       password: undefined,
       confirmPassword: undefined,
       changePassword: false,
-      role: Role.Employee
-    }
+      role: Role.Employee,
+    },
   })
   const avatar = form.watch('avatar')
   const name = form.watch('name')
@@ -90,7 +60,7 @@ export default function EditEmployee({
         changePassword: form.getValues('changePassword'),
         password: form.getValues('password'),
         confirmPassword: form.getValues('confirmPassword'),
-        role
+        role,
       })
     }
   }, [data, form])
@@ -100,30 +70,28 @@ export default function EditEmployee({
     try {
       let body: UpdateEmployeeAccountBodyType & { id: number } = {
         id: id as number,
-        ...values
+        ...values,
       }
       if (file) {
         const formData = new FormData()
         formData.append('file', file)
-        const uploadImageResult = await uploadMediaMutation.mutateAsync(
-          formData
-        )
+        const uploadImageResult = await uploadMediaMutation.mutateAsync(formData)
         const imageUrl = uploadImageResult.payload.data
         body = {
           ...body,
-          avatar: imageUrl
+          avatar: imageUrl,
         }
       }
       const result = await updateAccountMutation.mutateAsync(body)
       toast({
-        description: result.payload.message
+        description: result.payload.message,
       })
       reset()
       onSubmitSuccess && onSubmitSuccess()
     } catch (error) {
       handleErrorApi({
         error,
-        setError: form.setError
+        setError: form.setError,
       })
     }
   }
@@ -145,17 +113,10 @@ export default function EditEmployee({
       <DialogContent className='sm:max-w-[600px] max-h-screen overflow-auto'>
         <DialogHeader>
           <DialogTitle>Cập nhật tài khoản</DialogTitle>
-          <DialogDescription>
-            Các trường tên, email, mật khẩu là bắt buộc
-          </DialogDescription>
+          <DialogDescription>Các trường tên, email, mật khẩu là bắt buộc</DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form
-            noValidate
-            className='grid auto-rows-max items-start gap-4 md:gap-8'
-            id='edit-employee-form'
-            onSubmit={form.handleSubmit(onSubmit, console.log)}
-          >
+          <form noValidate className='grid auto-rows-max items-start gap-4 md:gap-8' id='edit-employee-form' onSubmit={form.handleSubmit(onSubmit, console.log)}>
             <div className='grid gap-4 py-4'>
               <FormField
                 control={form.control}
@@ -165,9 +126,7 @@ export default function EditEmployee({
                     <div className='flex gap-2 items-start justify-start'>
                       <Avatar className='aspect-square w-[100px] h-[100px] rounded-md object-cover'>
                         <AvatarImage src={previewAvatarFromFile} />
-                        <AvatarFallback className='rounded-none'>
-                          {name || 'Avatar'}
-                        </AvatarFallback>
+                        <AvatarFallback className='rounded-none'>{name || 'Avatar'}</AvatarFallback>
                       </Avatar>
                       <input
                         type='file'
@@ -182,11 +141,7 @@ export default function EditEmployee({
                         }}
                         className='hidden'
                       />
-                      <button
-                        className='flex aspect-square w-[100px] items-center justify-center rounded-md border border-dashed'
-                        type='button'
-                        onClick={() => avatarInputRef.current?.click()}
-                      >
+                      <button className='flex aspect-square w-[100px] items-center justify-center rounded-md border border-dashed' type='button' onClick={() => avatarInputRef.current?.click()}>
                         <Upload className='h-4 w-4 text-muted-foreground' />
                         <span className='sr-only'>Upload</span>
                       </button>
@@ -233,10 +188,7 @@ export default function EditEmployee({
                     <div className='grid grid-cols-4 items-center justify-items-start gap-4'>
                       <Label htmlFor='role'>Vai trò</Label>
                       <div className='col-span-3 w-full space-y-2'>
-                        <Select
-                          onValueChange={field.onChange}
-                          value={field.value}
-                        >
+                        <Select onValueChange={field.onChange} value={field.value}>
                           <FormControl>
                             <SelectTrigger>
                               <SelectValue placeholder='Chọn vai trò' />
@@ -267,10 +219,7 @@ export default function EditEmployee({
                     <div className='grid grid-cols-4 items-center justify-items-start gap-4'>
                       <Label htmlFor='email'>Đổi mật khẩu</Label>
                       <div className='col-span-3 w-full space-y-2'>
-                        <Switch
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
+                        <Switch checked={field.value} onCheckedChange={field.onChange} />
                         <FormMessage />
                       </div>
                     </div>
@@ -286,12 +235,7 @@ export default function EditEmployee({
                       <div className='grid grid-cols-4 items-center justify-items-start gap-4'>
                         <Label htmlFor='password'>Mật khẩu mới</Label>
                         <div className='col-span-3 w-full space-y-2'>
-                          <Input
-                            id='password'
-                            className='w-full'
-                            type='password'
-                            {...field}
-                          />
+                          <Input id='password' className='w-full' type='password' {...field} />
                           <FormMessage />
                         </div>
                       </div>
@@ -306,16 +250,9 @@ export default function EditEmployee({
                   render={({ field }) => (
                     <FormItem>
                       <div className='grid grid-cols-4 items-center justify-items-start gap-4'>
-                        <Label htmlFor='confirmPassword'>
-                          Xác nhận mật khẩu mới
-                        </Label>
+                        <Label htmlFor='confirmPassword'>Xác nhận mật khẩu mới</Label>
                         <div className='col-span-3 w-full space-y-2'>
-                          <Input
-                            id='confirmPassword'
-                            className='w-full'
-                            type='password'
-                            {...field}
-                          />
+                          <Input id='confirmPassword' className='w-full' type='password' {...field} />
                           <FormMessage />
                         </div>
                       </div>

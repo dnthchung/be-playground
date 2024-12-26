@@ -4,17 +4,7 @@ import { Role } from '@/constants/type'
 import { cn, handleErrorApi } from '@/lib/utils'
 import { useLogoutMutation } from '@/queries/useAuth'
 import { RoleType } from '@/types/jwt.types'
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger
-} from '@/components/ui/alert-dialog'
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components'
 import { Link, useRouter } from '@/navigation'
 import { useTranslations } from 'next-intl'
 
@@ -26,28 +16,28 @@ const menuItems: {
 }[] = [
   {
     title: 'home',
-    href: '/'
+    href: '/',
   },
   {
     title: 'menu',
     href: '/guest/menu',
-    role: [Role.Guest]
+    role: [Role.Guest],
   },
   {
     title: 'orders',
     href: '/guest/orders',
-    role: [Role.Guest]
+    role: [Role.Guest],
   },
   {
     title: 'login',
     href: '/login',
-    hideWhenLogin: true
+    hideWhenLogin: true,
   },
   {
     title: 'manage',
     href: '/manage/dashboard',
-    role: [Role.Owner, Role.Employee]
-  }
+    role: [Role.Owner, Role.Employee],
+  },
 ]
 
 // Server: Món ăn, Đăng nhập. Do server không biết trạng thái đăng nhập của user
@@ -70,7 +60,7 @@ export default function NavItems({ className }: { className?: string }) {
       router.push('/')
     } catch (error: any) {
       handleErrorApi({
-        error
+        error,
       })
     }
   }
@@ -80,9 +70,7 @@ export default function NavItems({ className }: { className?: string }) {
         // Trường hợp đăng nhập thì chỉ hiển thị menu đăng nhập
         const isAuth = item.role && role && item.role.includes(role)
         // Trường hợp menu item có thể hiển thị dù cho đã đăng nhập hay chưa
-        const canShow =
-          (item.role === undefined && !item.hideWhenLogin) ||
-          (!role && item.hideWhenLogin)
+        const canShow = (item.role === undefined && !item.hideWhenLogin) || (!role && item.hideWhenLogin)
         if (isAuth || canShow) {
           return (
             <Link href={item.href} key={item.href} className={className}>
@@ -99,17 +87,11 @@ export default function NavItems({ className }: { className?: string }) {
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>
-                {t('logoutDialog.logoutQuestion')}
-              </AlertDialogTitle>
-              <AlertDialogDescription>
-                {t('logoutDialog.logoutConfirm')}
-              </AlertDialogDescription>
+              <AlertDialogTitle>{t('logoutDialog.logoutQuestion')}</AlertDialogTitle>
+              <AlertDialogDescription>{t('logoutDialog.logoutConfirm')}</AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>
-                {t('logoutDialog.logoutCancel')}
-              </AlertDialogCancel>
+              <AlertDialogCancel>{t('logoutDialog.logoutCancel')}</AlertDialogCancel>
               <AlertDialogAction onClick={logout}>OK</AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>

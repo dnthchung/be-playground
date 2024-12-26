@@ -1,41 +1,19 @@
 'use client'
 import { Button } from '@/components/ui/button'
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger
-} from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { PlusCircle } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage
-} from '@/components/ui/form'
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
 import { getVietnameseTableStatus, handleErrorApi } from '@/lib/utils'
-import {
-  CreateTableBody,
-  CreateTableBodyType
-} from '@/schemaValidations/table.schema'
+import { CreateTableBody, CreateTableBodyType } from '@/schemaValidations/table.schema'
 import { TableStatus, TableStatusValues } from '@/constants/type'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { useAddTableMutation } from '@/queries/useTable'
-import { toast } from '@/components/ui/use-toast'
+import { toast } from '@/hooks/use-toast'
 
 export default function AddTable() {
   const [open, setOpen] = useState(false)
@@ -45,8 +23,8 @@ export default function AddTable() {
     defaultValues: {
       number: 0,
       capacity: 2,
-      status: TableStatus.Hidden
-    }
+      status: TableStatus.Hidden,
+    },
   })
   const reset = () => {
     form.reset()
@@ -56,14 +34,14 @@ export default function AddTable() {
     try {
       const result = await addTableMutation.mutateAsync(values)
       toast({
-        description: result.payload.message
+        description: result.payload.message,
       })
       reset()
       setOpen(false)
     } catch (error) {
       handleErrorApi({
         error,
-        setError: form.setError
+        setError: form.setError,
       })
     }
   }
@@ -80,9 +58,7 @@ export default function AddTable() {
       <DialogTrigger asChild>
         <Button size='sm' className='h-7 gap-1'>
           <PlusCircle className='h-3.5 w-3.5' />
-          <span className='sr-only sm:not-sr-only sm:whitespace-nowrap'>
-            Thêm bàn
-          </span>
+          <span className='sr-only sm:not-sr-only sm:whitespace-nowrap'>Thêm bàn</span>
         </Button>
       </DialogTrigger>
       <DialogContent className='sm:max-w-[600px] max-h-screen overflow-auto'>
@@ -108,12 +84,7 @@ export default function AddTable() {
                     <div className='grid grid-cols-4 items-center justify-items-start gap-4'>
                       <Label htmlFor='name'>Số hiệu bàn</Label>
                       <div className='col-span-3 w-full space-y-2'>
-                        <Input
-                          id='number'
-                          type='number'
-                          className='w-full'
-                          {...field}
-                        />
+                        <Input id='number' type='number' className='w-full' {...field} />
                         <FormMessage />
                       </div>
                     </div>
@@ -128,12 +99,7 @@ export default function AddTable() {
                     <div className='grid grid-cols-4 items-center justify-items-start gap-4'>
                       <Label htmlFor='price'>Lượng khách cho phép</Label>
                       <div className='col-span-3 w-full space-y-2'>
-                        <Input
-                          id='capacity'
-                          className='w-full'
-                          {...field}
-                          type='number'
-                        />
+                        <Input id='capacity' className='w-full' {...field} type='number' />
                         <FormMessage />
                       </div>
                     </div>
@@ -148,10 +114,7 @@ export default function AddTable() {
                     <div className='grid grid-cols-4 items-center justify-items-start gap-4'>
                       <Label htmlFor='description'>Trạng thái</Label>
                       <div className='col-span-3 w-full space-y-2'>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                        >
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
                           <FormControl>
                             <SelectTrigger>
                               <SelectValue placeholder='Chọn trạng thái' />

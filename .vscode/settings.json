@@ -2,5 +2,5 @@
 {
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "cSpell.words": ["sonner", "vaul", "qrcode", "toploader", "minmaxPassword"]
+  "cSpell.words": ["sonner", "vaul", "qrcode", "toploader", "minmaxPassword", "embla", "cmdk"]
 }

@@ -1,56 +1,23 @@
 'use client'
 import { Button } from '@/components/ui/button'
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle
-} from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage
-} from '@/components/ui/form'
-import {
-  getTableLink,
-  getVietnameseTableStatus,
-  handleErrorApi
-} from '@/lib/utils'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select'
-import {
-  UpdateTableBody,
-  UpdateTableBodyType
-} from '@/schemaValidations/table.schema'
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
+import { getTableLink, getVietnameseTableStatus, handleErrorApi } from '@/lib/utils'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { UpdateTableBody, UpdateTableBodyType } from '@/schemaValidations/table.schema'
 import { TableStatus, TableStatusValues } from '@/constants/type'
 import { Switch } from '@/components/ui/switch'
 import { Link } from '@/navigation'
 import { useEffect } from 'react'
 import { useGetTableQuery, useUpdateTableMutation } from '@/queries/useTable'
-import { toast } from '@/components/ui/use-toast'
+import { toast } from '@/hooks/use-toast'
 import QRCodeTable from '@/components/qrcode-table'
 
-export default function EditTable({
-  id,
-  setId,
-  onSubmitSuccess
-}: {
-  id?: number | undefined
-  setId: (value: number | undefined) => void
-  onSubmitSuccess?: () => void
-}) {
+export default function EditTable({ id, setId, onSubmitSuccess }: { id?: number | undefined; setId: (value: number | undefined) => void; onSubmitSuccess?: () => void }) {
   const updateTableMutation = useUpdateTableMutation()
 
   const form = useForm<UpdateTableBodyType>({
@@ -58,8 +25,8 @@ export default function EditTable({
     defaultValues: {
       capacity: 2,
       status: TableStatus.Hidden,
-      changeToken: false
-    }
+      changeToken: false,
+    },
   })
   const { data } = useGetTableQuery({ enabled: Boolean(id), id: id as number })
 
@@ -69,7 +36,7 @@ export default function EditTable({
       form.reset({
         capacity,
         status,
-        changeToken: form.getValues('changeToken')
+        changeToken: form.getValues('changeToken'),
       })
     }
   }, [data, form])
@@ -78,18 +45,18 @@ export default function EditTable({
     try {
       let body: UpdateTableBodyType & { id: number } = {
         id: id as number,
-        ...values
+        ...values,
       }
       const result = await updateTableMutation.mutateAsync(body)
       toast({
-        description: result.payload.message
+        description: result.payload.message,
       })
       reset()
       onSubmitSuccess && onSubmitSuccess()
     } catch (error) {
       handleErrorApi({
         error,
-        setError: form.setError
+        setError: form.setError,
       })
     }
   }
@@ -117,24 +84,13 @@ export default function EditTable({
           <DialogTitle>Cập nhật bàn ăn</DialogTitle>
         </DialogHeader>
         <Form {...form}>
-          <form
-            noValidate
-            className='grid auto-rows-max items-start gap-4 md:gap-8'
-            onSubmit={form.handleSubmit(onSubmit, console.log)}
-            id='edit-table-form'
-          >
+          <form noValidate className='grid auto-rows-max items-start gap-4 md:gap-8' onSubmit={form.handleSubmit(onSubmit, console.log)} id='edit-table-form'>
             <div className='grid gap-4 py-4'>
               <FormItem>
                 <div className='grid grid-cols-4 items-center justify-items-start gap-4'>
                   <Label htmlFor='name'>Số hiệu bàn</Label>
                   <div className='col-span-3 w-full space-y-2'>
-                    <Input
-                      id='number'
-                      type='number'
-                      className='w-full'
-                      value={data?.payload.data.number ?? 0}
-                      readOnly
-                    />
+                    <Input id='number' type='number' className='w-full' value={data?.payload.data.number ?? 0} readOnly />
                     <FormMessage />
                   </div>
                 </div>
@@ -147,12 +103,7 @@ export default function EditTable({
                     <div className='grid grid-cols-4 items-center justify-items-start gap-4'>
                       <Label htmlFor='price'>Sức chứa (người)</Label>
                       <div className='col-span-3 w-full space-y-2'>
-                        <Input
-                          id='capacity'
-                          className='w-full'
-                          {...field}
-                          type='number'
-                        />
+                        <Input id='capacity' className='w-full' {...field} type='number' />
                         <FormMessage />
                       </div>
                     </div>
@@ -167,10 +118,7 @@ export default function EditTable({
                     <div className='grid grid-cols-4 items-center justify-items-start gap-4'>
                       <Label htmlFor='description'>Trạng thái</Label>
                       <div className='col-span-3 w-full space-y-2'>
-                        <Select
-                          onValueChange={field.onChange}
-                          value={field.value}
-                        >
+                        <Select onValueChange={field.onChange} value={field.value}>
                           <FormControl>
                             <SelectTrigger>
                               <SelectValue placeholder='Chọn trạng thái' />
@@ -200,11 +148,7 @@ export default function EditTable({
                       <Label htmlFor='price'>Đổi QR Code</Label>
                       <div className='col-span-3 w-full space-y-2'>
                         <div className='flex items-center space-x-2'>
-                          <Switch
-                            id='changeToken'
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                          />
+                          <Switch id='changeToken' checked={field.value} onCheckedChange={field.onChange} />
                         </div>
                       </div>
 
@@ -216,14 +160,7 @@ export default function EditTable({
               <FormItem>
                 <div className='grid grid-cols-4 items-center justify-items-start gap-4'>
                   <Label>QR Code</Label>
-                  <div className='col-span-3 w-full space-y-2'>
-                    {data && (
-                      <QRCodeTable
-                        token={data.payload.data.token}
-                        tableNumber={data.payload.data.number}
-                      />
-                    )}
-                  </div>
+                  <div className='col-span-3 w-full space-y-2'>{data && <QRCodeTable token={data.payload.data.token} tableNumber={data.payload.data.number} />}</div>
                 </div>
               </FormItem>
               <FormItem>
@@ -234,14 +171,14 @@ export default function EditTable({
                       <Link
                         href={getTableLink({
                           token: data.payload.data.token,
-                          tableNumber: data.payload.data.number
+                          tableNumber: data.payload.data.number,
                         })}
                         target='_blank'
                         className='break-all'
                       >
                         {getTableLink({
                           token: data.payload.data.token,
-                          tableNumber: data.payload.data.number
+                          tableNumber: data.payload.data.number,
                         })}
                       </Link>
                     )}

@@ -1,10 +1,10 @@
-import DarkModeToggle from '@/components/dark-mode-toggle'
+import DarkModeToggle from '@/components/features/dark-mode-toggle'
 import DropdownAvatar from '@/app/[locale]/manage/dropdown-avatar'
 import NavLinks from '@/app/[locale]/manage/nav-links'
 import MobileNavLinks from '@/app/[locale]/manage/mobile-nav-links'
 
 export default function Layout({
-  children
+  children,
 }: Readonly<{
   children: React.ReactNode
 }>) {

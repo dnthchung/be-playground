@@ -5,7 +5,7 @@ import { checkAndRefreshToken } from '@/lib/utils'
 import { usePathname, useRouter } from '@/navigation'
 import { useEffect } from 'react'
 
-// Những page sau sẽ không check refesh token
+// Những page sau sẽ không check refresh token
 const UNAUTHENTICATED_PATH = ['/login', '/logout', '/refresh-token']
 export default function RefreshToken() {
   const pathname = usePathname()
@@ -23,7 +23,7 @@ export default function RefreshToken() {
           disconnectSocket()
           router.push('/login')
         },
-        force
+        force,
       })
     }
 

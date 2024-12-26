@@ -11,53 +11,24 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  useReactTable
+  useReactTable,
 } from '@tanstack/react-table'
 
 import { Button } from '@/components/ui/button'
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Input } from '@/components/ui/input'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow
-} from '@/components/ui/table'
-import {
-  AccountListResType,
-  AccountType
-} from '@/schemaValidations/account.schema'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { AccountListResType, AccountType } from '@/schemaValidations/account.schema'
 import AddEmployee from '@/app/[locale]/manage/accounts/add-employee'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import EditEmployee from '@/app/[locale]/manage/accounts/edit-employee'
 import { createContext, useContext, useEffect, useState } from 'react'
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle
-} from '@/components/ui/alert-dialog'
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog'
 import { useSearchParams } from 'next/navigation'
 import AutoPagination from '@/components/auto-pagination'
-import {
-  useDeleteAccountMutation,
-  useGetAccountList
-} from '@/queries/useAccount'
-import { toast } from '@/components/ui/use-toast'
+import { useDeleteAccountMutation, useGetAccountList } from '@/queries/useAccount'
+import { toast } from '@/hooks/use-toast'
 import { handleErrorApi } from '@/lib/utils'
 
 type AccountItem = AccountListResType['data'][0]
@@ -71,13 +42,13 @@ const AccountTableContext = createContext<{
   setEmployeeIdEdit: (value: number | undefined) => {},
   employeeIdEdit: undefined,
   employeeDelete: null,
-  setEmployeeDelete: (value: AccountItem | null) => {}
+  setEmployeeDelete: (value: AccountItem | null) => {},
 })
 
 export const columns: ColumnDef<AccountType>[] = [
   {
     accessorKey: 'id',
-    header: 'ID'
+    header: 'ID',
   },
   {
     accessorKey: 'avatar',
@@ -86,38 +57,32 @@ export const columns: ColumnDef<AccountType>[] = [
       <div>
         <Avatar className='aspect-square w-[100px] h-[100px] rounded-md object-cover'>
           <AvatarImage src={row.getValue('avatar')} />
-          <AvatarFallback className='rounded-none'>
-            {row.original.name}
-          </AvatarFallback>
+          <AvatarFallback className='rounded-none'>{row.original.name}</AvatarFallback>
         </Avatar>
       </div>
-    )
+    ),
   },
   {
     accessorKey: 'name',
     header: 'Tên',
-    cell: ({ row }) => <div className='capitalize'>{row.getValue('name')}</div>
+    cell: ({ row }) => <div className='capitalize'>{row.getValue('name')}</div>,
   },
   {
     accessorKey: 'email',
     header: ({ column }) => {
       return (
-        <Button
-          variant='ghost'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
+        <Button variant='ghost' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
           Email
           <CaretSortIcon className='ml-2 h-4 w-4' />
         </Button>
       )
-    }
+    },
   },
   {
     id: 'actions',
     enableHiding: false,
     cell: function Actions({ row }) {
-      const { setEmployeeIdEdit, setEmployeeDelete } =
-        useContext(AccountTableContext)
+      const { setEmployeeIdEdit, setEmployeeDelete } = useContext(AccountTableContext)
       const openEditEmployee = () => {
         setEmployeeIdEdit(row.original.id)
       }
@@ -137,23 +102,15 @@ export const columns: ColumnDef<AccountType>[] = [
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={openEditEmployee}>Sửa</DropdownMenuItem>
-            <DropdownMenuItem onClick={openDeleteEmployee}>
-              Xóa
-            </DropdownMenuItem>
+            <DropdownMenuItem onClick={openDeleteEmployee}>Xóa</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       )
-    }
-  }
+    },
+  },
 ]
 
-function AlertDialogDeleteAccount({
-  employeeDelete,
-  setEmployeeDelete
-}: {
-  employeeDelete: AccountItem | null
-  setEmployeeDelete: (value: AccountItem | null) => void
-}) {
+function AlertDialogDeleteAccount({ employeeDelete, setEmployeeDelete }: { employeeDelete: AccountItem | null; setEmployeeDelete: (value: AccountItem | null) => void }) {
   const { mutateAsync } = useDeleteAccountMutation()
   const deleteAccount = async () => {
     if (employeeDelete) {
@@ -161,11 +118,11 @@ function AlertDialogDeleteAccount({
         const result = await mutateAsync(employeeDelete.id)
         setEmployeeDelete(null)
         toast({
-          title: result.payload.message
+          title: result.payload.message,
         })
       } catch (error) {
         handleErrorApi({
-          error
+          error,
         })
       }
     }
@@ -183,18 +140,12 @@ function AlertDialogDeleteAccount({
         <AlertDialogHeader>
           <AlertDialogTitle>Xóa nhân viên?</AlertDialogTitle>
           <AlertDialogDescription>
-            Tài khoản{' '}
-            <span className='bg-foreground text-primary-foreground rounded px-1'>
-              {employeeDelete?.name}
-            </span>{' '}
-            sẽ bị xóa vĩnh viễn
+            Tài khoản <span className='bg-foreground text-primary-foreground rounded px-1'>{employeeDelete?.name}</span> sẽ bị xóa vĩnh viễn
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={deleteAccount}>
-            Continue
-          </AlertDialogAction>
+          <AlertDialogAction onClick={deleteAccount}>Continue</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
@@ -217,7 +168,7 @@ export default function AccountTable() {
   const [rowSelection, setRowSelection] = useState({})
   const [pagination, setPagination] = useState({
     pageIndex, // Gía trị mặc định ban đầu, không có ý nghĩa khi data được fetch bất đồng bộ
-    pageSize: PAGE_SIZE //default page size
+    pageSize: PAGE_SIZE, //default page size
   })
 
   const table = useReactTable({
@@ -238,14 +189,14 @@ export default function AccountTable() {
       columnFilters,
       columnVisibility,
       rowSelection,
-      pagination
-    }
+      pagination,
+    },
   })
 
   useEffect(() => {
     table.setPagination({
       pageIndex,
-      pageSize: PAGE_SIZE
+      pageSize: PAGE_SIZE,
     })
   }, [table, pageIndex])
 
@@ -255,26 +206,17 @@ export default function AccountTable() {
         employeeIdEdit,
         setEmployeeIdEdit,
         employeeDelete,
-        setEmployeeDelete
+        setEmployeeDelete,
       }}
     >
       <div className='w-full'>
-        <EditEmployee
-          id={employeeIdEdit}
-          setId={setEmployeeIdEdit}
-          onSubmitSuccess={() => {}}
-        />
-        <AlertDialogDeleteAccount
-          employeeDelete={employeeDelete}
-          setEmployeeDelete={setEmployeeDelete}
-        />
+        <EditEmployee id={employeeIdEdit} setId={setEmployeeIdEdit} onSubmitSuccess={() => {}} />
+        <AlertDialogDeleteAccount employeeDelete={employeeDelete} setEmployeeDelete={setEmployeeDelete} />
         <div className='flex items-center py-4'>
           <Input
             placeholder='Filter emails...'
             value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}
-            onChange={(event) =>
-              table.getColumn('email')?.setFilterValue(event.target.value)
-            }
+            onChange={(event) => table.getColumn('email')?.setFilterValue(event.target.value)}
             className='max-w-sm'
           />
           <div className='ml-auto flex items-center gap-2'>
@@ -287,16 +229,7 @@ export default function AccountTable() {
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
-                    return (
-                      <TableHead key={header.id}>
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                      </TableHead>
-                    )
+                    return <TableHead key={header.id}>{header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}</TableHead>
                   })}
                 </TableRow>
               ))}
@@ -304,26 +237,15 @@ export default function AccountTable() {
             <TableBody>
               {table.getRowModel().rows?.length ? (
                 table.getRowModel().rows.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    data-state={row.getIsSelected() && 'selected'}
-                  >
+                  <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
                     {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </TableCell>
+                      <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
                     ))}
                   </TableRow>
                 ))
               ) : (
                 <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className='h-24 text-center'
-                  >
+                  <TableCell colSpan={columns.length} className='h-24 text-center'>
                     No results.
                   </TableCell>
                 </TableRow>
@@ -333,16 +255,10 @@ export default function AccountTable() {
         </div>
         <div className='flex items-center justify-end space-x-2 py-4'>
           <div className='text-xs text-muted-foreground py-4 flex-1 '>
-            Hiển thị{' '}
-            <strong>{table.getPaginationRowModel().rows.length}</strong> trong{' '}
-            <strong>{data.length}</strong> kết quả
+            Hiển thị <strong>{table.getPaginationRowModel().rows.length}</strong> trong <strong>{data.length}</strong> kết quả
           </div>
           <div>
-            <AutoPagination
-              page={table.getState().pagination.pageIndex + 1}
-              pageSize={table.getPageCount()}
-              pathname='/manage/accounts'
-            />
+            <AutoPagination page={table.getState().pagination.pageIndex + 1} pageSize={table.getPageCount()} pathname='/manage/accounts' />
           </div>
         </div>
       </div>

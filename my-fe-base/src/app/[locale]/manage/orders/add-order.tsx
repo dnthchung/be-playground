@@ -1,20 +1,10 @@
 'use client'
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger
-} from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { PlusCircle } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import {
-  GuestLoginBody,
-  GuestLoginBodyType
-} from '@/schemaValidations/guest.schema'
+import { GuestLoginBody, GuestLoginBodyType } from '@/schemaValidations/guest.schema'
 import { Form, FormField, FormItem, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -31,13 +21,11 @@ import { DishStatus } from '@/constants/type'
 import { useDishListQuery } from '@/queries/useDish'
 import { useCreateOrderMutation } from '@/queries/useOrder'
 import { useCreateGuestMutation } from '@/queries/useAccount'
-import { toast } from '@/components/ui/use-toast'
+import { toast } from '@/hooks/use-toast'
 
 export default function AddOrder() {
   const [open, setOpen] = useState(false)
-  const [selectedGuest, setSelectedGuest] = useState<
-    GetListGuestsResType['data'][0] | null
-  >(null)
+  const [selectedGuest, setSelectedGuest] = useState<GetListGuestsResType['data'][0] | null>(null)
   const [isNewGuest, setIsNewGuest] = useState(true)
   const [orders, setOrders] = useState<CreateOrdersBodyType['orders']>([])
   const { data } = useDishListQuery()
@@ -57,8 +45,8 @@ export default function AddOrder() {
     resolver: zodResolver(GuestLoginBody),
     defaultValues: {
       name: '',
-      tableNumber: 0
-    }
+      tableNumber: 0,
+    },
   })
   const name = form.watch('name')
   const tableNumber = form.watch('tableNumber')
@@ -84,25 +72,25 @@ export default function AddOrder() {
       if (isNewGuest) {
         const guestRes = await createGuestMutation.mutateAsync({
           name,
-          tableNumber
+          tableNumber,
         })
         guestId = guestRes.payload.data.id
       }
       if (!guestId) {
         toast({
-          description: 'Hãy chọn một khách hàng'
+          description: 'Hãy chọn một khách hàng',
         })
         return
       }
       await createOrderMutation.mutateAsync({
         guestId,
-        orders
+        orders,
       })
       reset()
     } catch (error) {
       handleErrorApi({
         error,
-        setError: form.setError
+        setError: form.setError,
       })
     }
   }
@@ -128,9 +116,7 @@ export default function AddOrder() {
       <DialogTrigger asChild>
         <Button size='sm' className='h-7 gap-1'>
           <PlusCircle className='h-3.5 w-3.5' />
-          <span className='sr-only sm:not-sr-only sm:whitespace-nowrap'>
-            Tạo đơn hàng
-          </span>
+          <span className='sr-only sm:not-sr-only sm:whitespace-nowrap'>Tạo đơn hàng</span>
         </Button>
       </DialogTrigger>
       <DialogContent className='sm:max-w-[600px] max-h-screen overflow-auto'>
@@ -140,20 +126,12 @@ export default function AddOrder() {
         <div className='grid grid-cols-4 items-center justify-items-start gap-4'>
           <Label htmlFor='isNewGuest'>Khách hàng mới</Label>
           <div className='col-span-3 flex items-center'>
-            <Switch
-              id='isNewGuest'
-              checked={isNewGuest}
-              onCheckedChange={setIsNewGuest}
-            />
+            <Switch id='isNewGuest' checked={isNewGuest} onCheckedChange={setIsNewGuest} />
           </div>
         </div>
         {isNewGuest && (
           <Form {...form}>
-            <form
-              noValidate
-              className='grid auto-rows-max items-start gap-4 md:gap-8'
-              id='add-employee-form'
-            >
+            <form noValidate className='grid auto-rows-max items-start gap-4 md:gap-8' id='add-employee-form'>
               <div className='grid gap-4 py-4'>
                 <FormField
                   control={form.control}
@@ -219,48 +197,25 @@ export default function AddOrder() {
             <div
               key={dish.id}
               className={cn('flex gap-4', {
-                'pointer-events-none': dish.status === DishStatus.Unavailable
+                'pointer-events-none': dish.status === DishStatus.Unavailable,
               })}
             >
               <div className='flex-shrink-0 relative'>
-                {dish.status === DishStatus.Unavailable && (
-                  <span className='absolute inset-0 flex items-center justify-center text-sm'>
-                    Hết hàng
-                  </span>
-                )}
-                <Image
-                  src={dish.image}
-                  alt={dish.name}
-                  height={100}
-                  width={100}
-                  quality={100}
-                  className='object-cover w-[80px] h-[80px] rounded-md'
-                />
+                {dish.status === DishStatus.Unavailable && <span className='absolute inset-0 flex items-center justify-center text-sm'>Hết hàng</span>}
+                <Image src={dish.image} alt={dish.name} height={100} width={100} quality={100} className='object-cover w-[80px] h-[80px] rounded-md' />
               </div>
               <div className='space-y-1'>
                 <h3 className='text-sm'>{dish.name}</h3>
                 <p className='text-xs'>{dish.description}</p>
-                <p className='text-xs font-semibold'>
-                  {formatCurrency(dish.price)}
-                </p>
+                <p className='text-xs font-semibold'>{formatCurrency(dish.price)}</p>
               </div>
               <div className='flex-shrink-0 ml-auto flex justify-center items-center'>
-                <Quantity
-                  onChange={(value) => handleQuantityChange(dish.id, value)}
-                  value={
-                    orders.find((order) => order.dishId === dish.id)
-                      ?.quantity ?? 0
-                  }
-                />
+                <Quantity onChange={(value) => handleQuantityChange(dish.id, value)} value={orders.find((order) => order.dishId === dish.id)?.quantity ?? 0} />
               </div>
             </div>
           ))}
         <DialogFooter>
-          <Button
-            className='w-full justify-between'
-            onClick={handleOrder}
-            disabled={orders.length === 0}
-          >
+          <Button className='w-full justify-between' onClick={handleOrder} disabled={orders.length === 0}>
             <span>Đặt hàng · {orders.length} món</span>
             <span>{formatCurrency(totalPrice)}</span>
           </Button>
