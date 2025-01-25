@@ -1,7 +1,7 @@
 'use client'
 import menuItems from '@/app/[locale]/manage/menuItems'
 import { useAppStore } from '@/components/features/app-provider'
-import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip'
+import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components'
 import { cn } from '@/lib/utils'
 import { Package2, Settings } from 'lucide-react'
 import { Link, usePathname } from '@/navigation'

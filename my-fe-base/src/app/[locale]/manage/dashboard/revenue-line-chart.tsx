@@ -1,35 +1,17 @@
 'use client'
 
-import { TrendingUp } from 'lucide-react'
 import { CartesianGrid, Line, LineChart, XAxis } from 'recharts'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle
-} from '@/components/ui/card'
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent
-} from '@/components/ui/chart'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle, ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components'
 import { format, parse } from 'date-fns'
 import { DashboardIndicatorResType } from '@/schemaValidations/indicator.schema'
 const chartConfig = {
   desktop: {
     label: 'Desktop',
-    color: 'hsl(var(--chart-1))'
-  }
+    color: 'hsl(var(--chart-1))',
+  },
 } satisfies ChartConfig
 
-export function RevenueLineChart({
-  chartData
-}: {
-  chartData: DashboardIndicatorResType['data']['revenueByDate']
-}) {
+export function RevenueLineChart({ chartData }: { chartData: DashboardIndicatorResType['data']['revenueByDate'] }) {
   return (
     <Card>
       <CardHeader>
@@ -43,7 +25,7 @@ export function RevenueLineChart({
             data={chartData}
             margin={{
               left: 12,
-              right: 12
+              right: 12,
             }}
           >
             <CartesianGrid vertical={false} />
@@ -63,18 +45,8 @@ export function RevenueLineChart({
                 return ''
               }}
             />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent indicator='dashed' />}
-            />
-            <Line
-              dataKey='revenue'
-              name='Doanh thu'
-              type='linear'
-              stroke='var(--color-desktop)'
-              strokeWidth={2}
-              dot={false}
-            />
+            <ChartTooltip cursor={false} content={<ChartTooltipContent indicator='dashed' />} />
+            <Line dataKey='revenue' name='Doanh thu' type='linear' stroke='var(--color-desktop)' strokeWidth={2} dot={false} />
           </LineChart>
         </ChartContainer>
       </CardContent>

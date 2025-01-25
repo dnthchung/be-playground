@@ -7,10 +7,10 @@ export * from './features/search-params-loader'
 export { default as Footer } from './widgets/footer'
 
 //shadcn - Ui
-export { Button } from './shadcn/button'
-export { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './shadcn/dropdown-menu'
-export { Input } from './shadcn/input'
-export { Label } from './shadcn/label'
+export * from './shadcn/button'
+export * from './shadcn/dropdown-menu'
+export * from './shadcn/input'
+export * from './shadcn/label'
 export * from './shadcn/hover-card'
 export * from './shadcn/form'
 export * from './shadcn/checkbox'
@@ -28,6 +28,9 @@ export * from './shadcn/alert-dialog'
 export * from './shadcn/sheet'
 export * from './shadcn/toaster'
 export * from './shadcn/pagination'
+export * from './shadcn/chart'
+export * from './shadcn/tooltip'
+export * from './shadcn/avatar'
 
 // ============================== Thay vì ==============================
 // import { Button } from "@/components/shadcn/ui/button";
